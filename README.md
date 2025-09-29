@@ -105,3 +105,17 @@ Contributions are welcome! Here's how you can help:
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Syncing to GitHub and Hugging Face
+
+This repository is configured so that running `git push` (or `git push origin`) updates both GitHub (`origin`) and the Hugging Face Space. Git manages two push URLs under the `origin` remote and sends the same commit to each in sequence.
+
+- To reuse the setup after cloning on a new machine, run:
+  ```bash
+  git remote set-url --push origin https://github.com/ZyadKamalHamed/Imagen_Prompt_Engine.git
+  git remote set-url --add --push origin https://huggingface.co/spaces/24Zyad/Image_Gen_Prompt_Engine
+  ```
+- When prompted for credentials, use your GitHub Personal Access Token and your Hugging Face token. A credential helper will cache them if configured.
+- Use `git push` as usual. GitHub updates first; Hugging Face follows automatically. If one push fails, Git aborts before reaching the other and prints the error so you can retry.
+- You can still push directly to Hugging Face with `git push space main` if you need to test the Space without touching GitHub.
+
+Before pushing large image assets, keep Git LFS installed so that `.png` files tracked in `.gitattributes` continue to flow through LFS on both remotes.

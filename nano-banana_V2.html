@@ -3,586 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nano Banana - Professional Imagen Prompt Generator</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #1a202c;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            margin-top: 20px;
-            margin-bottom: 20px;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .header {
-            text-align: center;
-            padding: 40px 0;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            margin: -20px -20px 40px -20px;
-            border-radius: 24px 24px 0 0;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="white" opacity="0.1"/><circle cx="30" cy="30" r="1" fill="white" opacity="0.05"/><circle cx="70" cy="50" r="1" fill="white" opacity="0.1"/><circle cx="90" cy="80" r="1" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
-        }
-
-        .logo {
-            font-size: 2.5rem;
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 1;
-        }
-
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            letter-spacing: -0.025em;
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            font-weight: 400;
-            position: relative;
-            z-index: 1;
-        }
-
-        .progress-container {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 32px;
-        }
-
-        .progress-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            margin-bottom: 16px;
-        }
-
-        .progress-line {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #e2e8f0;
-            border-radius: 2px;
-            z-index: 1;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4f46e5, #7c3aed);
-            border-radius: 2px;
-            width: 0%;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .progress-step {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: white;
-            padding: 12px;
-            border-radius: 12px;
-            border: 2px solid #e2e8f0;
-            transition: all 0.3s ease;
-            min-width: 120px;
-        }
-
-        .progress-step.active {
-            border-color: #4f46e5;
-            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
-            transform: scale(1.05);
-        }
-
-        .progress-step.completed {
-            border-color: #7c3aed;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: white;
-        }
-
-        .step-number {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-        }
-
-        .progress-step.active .step-number {
-            background: #4f46e5;
-            color: white;
-        }
-
-        .progress-step.completed .step-number {
-            background: white;
-            color: #7c3aed;
-        }
-
-        .step-label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .page {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .category-selection {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-            margin-top: 40px;
-        }
-
-        .category-card {
-            background: linear-gradient(135deg, #f8fafc, #ffffff);
-            padding: 48px 32px;
-            border-radius: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .category-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .category-card:hover::before {
-            opacity: 0.05;
-        }
-
-        .category-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);
-            border-color: #4f46e5;
-        }
-
-        .category-icon {
-            font-size: 3.5rem;
-            margin-bottom: 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .category-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: #1e293b;
-            position: relative;
-            z-index: 1;
-        }
-
-        .category-description {
-            color: #64748b;
-            line-height: 1.6;
-            font-size: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .subcategory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 24px;
-            margin-top: 32px;
-        }
-
-        .subcategory-card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 28px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .subcategory-card:hover {
-            border-color: #4f46e5;
-            box-shadow: 0 12px 24px rgba(79, 70, 229, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .subcategory-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 12px;
-        }
-
-        .subcategory-description {
-            color: #64748b;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 16px;
-        }
-
-        .example-prompt {
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            padding: 16px;
-            border-radius: 8px;
-            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-            font-size: 0.85rem;
-            color: #475569;
-            line-height: 1.4;
-        }
-
-        .template-form {
-            margin-top: 32px;
-        }
-
-        .form-section {
-            background: #fafbfc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 28px;
-            margin-bottom: 24px;
-        }
-
-        .form-section h3 {
-            color: #1e293b;
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .field-group {
-            margin-bottom: 24px;
-        }
-
-        .field-label {
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 6px;
-            display: block;
-            font-size: 0.95rem;
-        }
-
-        .field-hint {
-            font-size: 0.85rem;
-            color: #6b7280;
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-
-        .field-examples {
-            font-size: 0.8rem;
-            color: #4f46e5;
-            margin-bottom: 8px;
-            font-style: italic;
-        }
-
-        input[type="text"], textarea, select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-            background: white;
-            font-family: inherit;
-        }
-
-        input[type="text"]:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        textarea {
-            height: 90px;
-            resize: vertical;
-            line-height: 1.5;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: white;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: #4f46e5;
-            border: 1px solid #d1d5db;
-        }
-
-        .btn-secondary:hover {
-            background: #f8fafc;
-            border-color: #4f46e5;
-        }
-
-        .button-container {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin: 32px 0;
-            flex-wrap: wrap;
-        }
-
-        .live-preview {
-            background: #0f172a;
-            color: #e2e8f0;
-            padding: 24px;
-            border-radius: 12px;
-            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            min-height: 200px;
-            border: 1px solid #334155;
-            position: relative;
-        }
-
-        .prompt-stats {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(51, 65, 85, 0.8);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
-
-        .back-btn {
-            background: #6b7280;
-            color: white;
-            margin-bottom: 24px;
-        }
-
-        .back-btn:hover {
-            background: #4b5563;
-        }
-
-        .config-section {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-
-        .config-section h4 {
-            color: #1e40af;
-            margin-bottom: 16px;
-            font-weight: 600;
-        }
-
-        .field-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: help;
-            margin-left: 4px;
-        }
-
-        .tooltip .tooltip-text {
-            visibility: hidden;
-            width: 280px;
-            background: #1f2937;
-            color: white;
-            text-align: left;
-            border-radius: 6px;
-            padding: 12px;
-            position: absolute;
-            z-index: 1000;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -140px;
-            font-size: 0.8rem;
-            line-height: 1.4;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .tooltip:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .advanced-toggle {
-            margin: 16px 0;
-            text-align: center;
-        }
-
-        .advanced-toggle button {
-            background: none;
-            border: 1px solid #d1d5db;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            color: #6b7280;
-            font-size: 0.85rem;
-        }
-
-        .advanced-fields {
-            display: none;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .advanced-fields.show {
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .category-selection {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .subcategory-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .progress-bar {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .progress-line {
-                display: none;
-            }
-            
-            .button-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
-            }
-
-            .field-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .page-title {
-            text-align: center;
-            color: #1e293b;
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: -0.025em;
-        }
-
-        .page-subtitle {
-            text-align: center;
-            color: #64748b;
-            font-size: 1.1rem;
-            margin-bottom: 32px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-    </style>
+    <meta name="description" content="Professional Google Nano-Banana prompt generator for AI image generation and editing">
+    <meta name="keywords" content="Nano-Banana, Google AI, prompt engineering, image generation, AI art">
+    <title>Nano Banana - Professional Nano-Banana Prompt Generator</title>
+    
+    <!-- External Stylesheets - ADD THESE LINKS -->
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/nano-banana.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div class="logo">🍌</div>
             <h1>NANO BANANA</h1>
-            <p class="subtitle">Professional Imagen Prompt Generator</p>
+            <p class="subtitle">Professional Nano-Banana Prompt Generator</p>
         </div>
 
         <div class="progress-container">
@@ -608,13 +42,13 @@
         <!-- Page 1: Choose Generation Type -->
         <div class="page active" id="page1">
             <h2 class="page-title">Choose Generation Type</h2>
-            <p class="page-subtitle">Select your preferred approach to image creation with Google's Imagen</p>
+            <p class="page-subtitle">Select your preferred approach to image creation with Google's Nano-Banana</p>
             
             <div class="category-selection">
                 <div class="category-card" onclick="selectCategory('text-to-image')">
                     <div class="category-icon">🎨</div>
                     <div class="category-title">Text-to-Image Generation</div>
-                    <p class="category-description">Create high-quality images from detailed text descriptions using Imagen's advanced generation capabilities. Perfect for original artwork, photography, and creative projects.</p>
+                    <p class="category-description">Create high-quality images from detailed text descriptions using Nano-Banana's advanced generation capabilities. Perfect for original artwork, photography, and creative projects.</p>
                 </div>
                 
                 <div class="category-card" onclick="selectCategory('editing')">
@@ -634,8 +68,8 @@
             <div class="subcategory-grid">
                 <div class="subcategory-card" onclick="selectTemplate('photography')">
                     <div class="subcategory-title">📷 Professional Photography</div>
-                  <div class="category-photo" style="width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; background-color: #f8f9fa; border-radius: 8px;">
-                      <img src="Image_Gen.png" alt="Text-to-image preview" style="max-width: 80%; max-height: 80%; object-fit: contain; border-radius: 8px;" />
+                    <div class="category-photo">
+                        <img src="Images/Image_Gen.png" alt="Text-to-image preview" />
                     </div>
                     <p class="subcategory-description">Generate photorealistic images with precise camera controls, lighting setups, and professional photography techniques.</p>
                     <div class="example-prompt">
@@ -645,9 +79,9 @@
                 </div>
 
                 <div class="subcategory-card" onclick="selectTemplate('illustration')">
-                <div class="subcategory-title">🎭 Illustration & Stickers</div>
-                    <div class="category-photo" style="width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; background-color: #f8f9fa; border-radius: 8px;">
-                      <img src="Sticker.png" alt="Text-to-image preview" style="max-width: 80%; max-height: 80%; object-fit: contain; border-radius: 8px;" />
+                    <div class="subcategory-title">🎭 Illustration & Stickers</div>
+                    <div class="category-photo">
+                        <img src="Images/Sticker.png" alt="Sticker design preview" />
                     </div>
                     <p class="subcategory-description">Create artistic illustrations, digital art, and sticker designs with specific art styles and aesthetic approaches.</p>
                     <div class="example-prompt">
@@ -658,8 +92,8 @@
 
                 <div class="subcategory-card" onclick="selectTemplate('product')">
                     <div class="subcategory-title">📦 Product Mockup & Commercial Photography</div>
-                    <div class="category-photo" style="width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; background-color: #f8f9fa; border-radius: 8px;">
-                      <img src="Product_Mockups.png" alt="Text-to-image preview" style="max-width: 80%; max-height: 80%; object-fit: contain; border-radius: 8px;" />
+                    <div class="category-photo">
+                        <img src="Images/Product_Mockups.png" alt="Product photography preview" />
                     </div>
                     <p class="subcategory-description">Professional product photography with studio lighting, mockup creation, and commercial presentation standards.</p>
                     <div class="example-prompt">
@@ -670,13 +104,13 @@
 
                 <div class="subcategory-card" onclick="selectTemplate('text-image')">
                     <div class="subcategory-title">📝 Text Integration</div>
-                    <div class="category-photo" style="width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; background-color: #f8f9fa; border-radius: 8px;">
-                      <img src="Text_in_images.png" alt="Text-to-image preview" style="max-width: 80%; max-height: 80%; object-fit: contain; border-radius: 8px;" />
+                    <div class="category-photo">
+                        <img src="Images/Text_in_images.png" alt="Text in images preview" />
                     </div>
                     <p class="subcategory-description">Generate images with accurate text rendering for logos, signage, and typography-focused designs (optimized for 25 character limit).</p>
                     <div class="example-prompt">
                         <strong>Example Output:</strong><br>
-                        "Create a modern, minimalist logo for a coffee shop called 'The Daily Grind'. The text should be in a clean, bold, sans-serif font. The design should feature a simple, stylized icon of a a coffee bean seamlessly integrated with the text. The color scheme is black and white."
+                        "Create a modern, minimalist logo for a coffee shop called 'The Daily Grind'. The text should be in a clean, bold, sans-serif font. The design should feature a simple, stylized icon of a coffee bean seamlessly integrated with the text. The color scheme is black and white."
                     </div>
                 </div>
             </div>
@@ -691,8 +125,8 @@
             <div class="subcategory-grid">
                 <div class="subcategory-card" onclick="selectTemplate('image-editing')">
                     <div class="subcategory-title">🔧 Precise Image Modification</div>
-                    <div class="category-photo" style="width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; background-color: #f8f9fa; border-radius: 8px;">
-                      <img src="Combinig_Multiple_Images.png" alt="Text-to-image preview" style="max-width: 80%; max-height: 80%; object-fit: contain; border-radius: 8px;" />
+                    <div class="category-photo">
+                        <img src="Images/Combinig_Multiple_Images.png" alt="Image editing preview" />
                     </div>
                     <p class="subcategory-description">Add, remove, or modify specific elements in existing images while maintaining natural integration and lighting consistency.</p>
                     <div class="example-prompt">
@@ -703,19 +137,19 @@
 
                 <div class="subcategory-card" onclick="selectTemplate('style-transfer')">
                     <div class="subcategory-title">🎨 Artistic Style Transfer</div>
-                    <div class="category-photo" style="width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; background-color: #f8f9fa; border-radius: 8px;">
-                      <img src="Style_Transfer.png" alt="Text-to-image preview" style="max-width: 80%; max-height: 80%; object-fit: contain; border-radius: 8px;" />
+                    <div class="category-photo">
+                        <img src="Images/Style_Transfer.png" alt="Style transfer preview" />
                     </div>
                     <p class="subcategory-description">Transform photographs into specific artistic styles while preserving the original composition and subject matter.</p>
                     <div class="example-prompt">
                         <strong>Example Output:</strong><br>
-                        ""Transform the provided photograph of a modern city street at night into the artistic style of Vincent van Gogh's 'Starry Night'. Preserve the original composition of buildings and cars, but render all elements with swirling, impasto brushstrokes and a dramatic palette of deep blues and bright yellows.""
+                        "Transform the provided photograph of a modern city street at night into the artistic style of Vincent van Gogh's 'Starry Night'. Preserve the original composition of buildings and cars, but render all elements with swirling, impasto brushstrokes and a dramatic palette of deep blues and bright yellows."
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Page 3: Template Form -->
+        <!-- Page 3: Template Form (dynamically populated) -->
         <div class="page" id="page3">
             <button class="btn back-btn" onclick="goBackToTemplates()">← Back to Templates</button>
             <div id="templateContent"></div>
@@ -723,6 +157,7 @@
     </div>
 
     <script>
+        // ALL JAVASCRIPT GOES HERE - KEEP IN HTML FILE
         let currentStep = 1;
         let selectedCategory = '';
         let selectedTemplate = '';
@@ -732,341 +167,83 @@
                 title: "📷 Professional Photography Template",
                 description: "Generate photorealistic images with professional camera techniques and lighting control",
                 fields: [
-                    { 
-                        name: 'subject', 
-                        label: 'Primary Subject', 
-                        type: 'textarea', 
-                        hint: 'Detailed description of the main subject including age, appearance, clothing, expressions, poses',
-                        examples: 'Examples: "A confident 30-year-old woman in business attire" • "Vintage leather motorcycle jacket on wooden table" • "Golden retriever running through autumn leaves"'
-                    },
-                    { 
-                        name: 'shotType', 
-                        label: 'Shot Composition', 
-                        type: 'select', 
-                        options: ['extreme close-up', 'close-up', 'medium close-up', 'medium shot', 'medium wide shot', 'wide shot', 'extreme wide shot', 'overhead shot', 'low angle', 'high angle'], 
-                        hint: 'Camera distance and angle relative to subject'
-                    },
-                    { 
-                        name: 'lens', 
-                        label: 'Lens & Camera Settings', 
-                        type: 'select', 
-                        options: ['14mm ultra-wide', '24mm wide-angle', '35mm standard', '50mm portrait', '85mm portrait', '135mm telephoto', '200mm telephoto', 'macro lens', 'fisheye lens', 'tilt-shift lens'], 
-                        hint: 'Lens focal length affects perspective, depth of field, and compression'
-                    },
-                    { 
-                        name: 'lighting', 
-                        label: 'Lighting Setup', 
-                        type: 'select', 
-                        options: ['natural daylight', 'golden hour', 'blue hour', 'studio softbox', 'ring light', 'dramatic side lighting', 'backlit silhouette', 'rim lighting', 'chiaroscuro', 'window light', 'candlelight'], 
-                        hint: 'Light source type, direction, and quality'
-                    },
-                    { 
-                        name: 'setting', 
-                        label: 'Environment & Background', 
-                        type: 'text', 
-                        hint: 'Detailed location description including architectural elements, natural features, props',
-                        examples: 'Examples: "Minimalist white photography studio" • "Bustling Tokyo street at night with neon signs" • "Rustic barn interior with hay bales and wooden beams"'
-                    },
-                    { 
-                        name: 'mood', 
-                        label: 'Mood & Atmosphere', 
-                        type: 'text', 
-                        hint: 'Emotional tone, energy level, and overall feeling of the image',
-                        examples: 'Examples: "Serene and contemplative" • "Dynamic and energetic" • "Mysterious and moody" • "Warm and inviting"'
-                    },
-                    { 
-                        name: 'cameraDetails', 
-                        label: 'Technical Camera Details', 
-                        type: 'text', 
-                        hint: 'Specific camera model, depth of field, focus details',
-                        examples: 'Examples: "Canon 5D Mark IV, shallow depth of field" • "Leica M10, sharp focus throughout" • "Film photography, grain texture"'
-                    },
-                    { 
-                        name: 'aspectRatio', 
-                        label: 'Aspect Ratio', 
-                        type: 'select', 
-                        options: ['1:1', '4:3', '3:4', '16:9', '9:16', '3:2', '2:3'], 
-                        hint: 'Image dimensions and orientation'
-                    }
+                    { name: 'subject', label: 'Primary Subject', type: 'textarea', hint: 'Detailed description of the main subject including age, appearance, clothing, expressions, poses', examples: 'Examples: "A confident 30-year-old woman in business attire" • "Vintage leather motorcycle jacket on wooden table"' },
+                    { name: 'shotType', label: 'Shot Composition', type: 'select', options: ['extreme close-up', 'close-up', 'medium close-up', 'medium shot', 'wide shot', 'overhead shot', 'low angle', 'high angle'], hint: 'Camera distance and angle relative to subject' },
+                    { name: 'lens', label: 'Lens & Camera Settings', type: 'select', options: ['14mm ultra-wide', '24mm wide-angle', '35mm standard', '50mm portrait', '85mm portrait', '135mm telephoto', 'macro lens', 'fisheye lens'], hint: 'Lens focal length affects perspective and depth' },
+                    { name: 'lighting', label: 'Lighting Setup', type: 'select', options: ['natural daylight', 'golden hour', 'blue hour', 'studio softbox', 'ring light', 'dramatic side lighting', 'backlit silhouette', 'rim lighting'], hint: 'Light source type, direction, and quality' },
+                    { name: 'setting', label: 'Environment & Background', type: 'text', hint: 'Detailed location description', examples: 'Examples: "Minimalist white studio" • "Bustling Tokyo street at night"' },
+                    { name: 'mood', label: 'Mood & Atmosphere', type: 'text', hint: 'Emotional tone and feeling', examples: 'Examples: "Serene and contemplative" • "Dynamic and energetic"' },
+                    { name: 'cameraDetails', label: 'Technical Camera Details', type: 'text', hint: 'Camera model, depth of field details', examples: 'Examples: "Canon 5D Mark IV, shallow depth of field"' },
+                    { name: 'aspectRatio', label: 'Aspect Ratio', type: 'select', options: ['1:1', '4:3', '3:4', '16:9', '9:16', '3:2', '2:3'], hint: 'Image dimensions and orientation' }
                 ],
                 template: "A {shotType} photo of {subject}, {lens} lens, {lighting}, set in {setting}, creating a {mood} atmosphere. Captured with {cameraDetails}, {aspectRatio} aspect ratio, professional photography"
             },
-
             illustration: {
                 title: "🎭 Illustration & Stickers Template",
-                description: "Create artistic illustrations, digital art, and sticker designs with specific styles",
+                description: "Create artistic illustrations, digital art, and sticker designs",
                 fields: [
-                    { 
-                        name: 'artStyle', 
-                        label: 'Art Style & Medium', 
-                        type: 'select', 
-                        options: ['kawaii cute style', 'minimalist vector', 'detailed digital painting', 'watercolor illustration', 'flat design', 'hand-drawn sketch', 'anime/manga style', 'vintage poster art', 'geometric abstract', 'children\'s book illustration'], 
-                        hint: 'Primary artistic approach and visual style'
-                    },
-                    { 
-                        name: 'subject', 
-                        label: 'Main Subject', 
-                        type: 'textarea', 
-                        hint: 'Character, object, or scene to illustrate with personality and distinctive features',
-                        examples: 'Examples: "Friendly robot chef wearing an apron and chef hat" • "Magical forest with glowing mushrooms and fairy lights" • "Coffee cup with steam forming heart shapes"'
-                    },
-                    { 
-                        name: 'colorPalette', 
-                        label: 'Color Palette', 
-                        type: 'text', 
-                        hint: 'Primary colors and color harmony approach',
-                        examples: 'Examples: "Pastel pink and mint green" • "Vibrant sunset oranges and purples" • "Monochromatic blue tones" • "Earth tones with gold accents"'
-                    },
-                    { 
-                        name: 'composition', 
-                        label: 'Composition & Layout', 
-                        type: 'text', 
-                        hint: 'Arrangement of elements, symmetry, and visual balance',
-                        examples: 'Examples: "Centered with symmetrical balance" • "Dynamic diagonal composition" • "Circular focal point" • "Layered depth with foreground and background"'
-                    },
-                    { 
-                        name: 'details', 
-                        label: 'Style Details', 
-                        type: 'text', 
-                        hint: 'Specific visual elements like line weight, texture, patterns, effects',
-                        examples: 'Examples: "Thick black outlines with cel shading" • "Soft gradients and subtle shadows" • "Geometric patterns and clean lines" • "Textured brushstrokes"'
-                    },
-                    { 
-                        name: 'purpose', 
-                        label: 'Usage Purpose', 
-                        type: 'select', 
-                        options: ['digital sticker', 'logo design', 'poster art', 'character design', 'book illustration', 'app icon', 'social media graphic'], 
-                        hint: 'Intended use affects design approach'
-                    },
-                    { 
-                        name: 'background', 
-                        label: 'Background Treatment', 
-                        type: 'select', 
-                        options: ['transparent background', 'solid color', 'gradient background', 'detailed scene', 'abstract pattern', 'textured surface'], 
-                        hint: 'Background style and complexity'
-                    }
+                    { name: 'artStyle', label: 'Art Style & Medium', type: 'select', options: ['kawaii cute style', 'minimalist vector', 'detailed digital painting', 'watercolor illustration', 'flat design', 'hand-drawn sketch', 'anime/manga style', 'vintage poster art'], hint: 'Primary artistic approach' },
+                    { name: 'subject', label: 'Main Subject', type: 'textarea', hint: 'Character or object to illustrate', examples: 'Examples: "Friendly robot chef wearing apron"' },
+                    { name: 'colorPalette', label: 'Color Palette', type: 'text', hint: 'Primary colors', examples: 'Examples: "Pastel pink and mint green"' },
+                    { name: 'composition', label: 'Composition & Layout', type: 'text', hint: 'Arrangement of elements', examples: 'Examples: "Centered with symmetrical balance"' },
+                    { name: 'details', label: 'Style Details', type: 'text', hint: 'Line weight, texture, patterns', examples: 'Examples: "Thick black outlines with cel shading"' },
+                    { name: 'purpose', label: 'Usage Purpose', type: 'select', options: ['digital sticker', 'logo design', 'poster art', 'character design', 'book illustration', 'app icon'], hint: 'Intended use' },
+                    { name: 'background', label: 'Background Treatment', type: 'select', options: ['transparent background', 'solid color', 'gradient background', 'detailed scene', 'abstract pattern'], hint: 'Background style' }
                 ],
                 template: "A {artStyle} illustration of {subject}, {colorPalette} color palette, {composition} composition, featuring {details}, designed as {purpose} with {background}"
             },
-
             product: {
                 title: "📦 Product Mockup & Commercial Photography Template",
-                description: "Professional product photography with studio lighting and commercial presentation",
+                description: "Professional product photography with studio lighting",
                 fields: [
-                    { 
-                        name: 'product', 
-                        label: 'Product Description', 
-                        type: 'textarea', 
-                        hint: 'Detailed product description including materials, colors, textures, size, brand elements',
-                        examples: 'Examples: "Sleek titanium smartwatch with black leather band" • "Handcrafted ceramic coffee mug with matte finish" • "Premium skincare serum in frosted glass bottle"'
-                    },
-                    { 
-                        name: 'backgroundSetup', 
-                        label: 'Background & Surface', 
-                        type: 'select', 
-                        options: ['seamless white background', 'seamless black background', 'gradient backdrop', 'marble surface', 'wooden table', 'fabric texture', 'acrylic platform', 'natural outdoor setting'], 
-                        hint: 'Surface and background setup for product placement'
-                    },
-                    { 
-                        name: 'lightingSetup', 
-                        label: 'Professional Lighting', 
-                        type: 'select', 
-                        options: ['three-point studio lighting', 'softbox key light', 'ring light setup', 'dramatic side lighting', 'backlit translucent', 'natural window light', 'LED panel lighting', 'beauty dish lighting'], 
-                        hint: 'Professional lighting configuration for product photography'
-                    },
-                    { 
-                        name: 'cameraAngle', 
-                        label: 'Product Angle', 
-                        type: 'select', 
-                        options: ['straight-on hero shot', '45-degree angle', 'overhead flat lay', 'low angle dramatic', 'profile side view', 'three-quarter view', 'detail macro shot'], 
-                        hint: 'Viewing angle to showcase product features'
-                    },
-                    { 
-                        name: 'focusStyle', 
-                        label: 'Focus & Depth', 
-                        type: 'select', 
-                        options: ['tack sharp focus', 'shallow depth of field', 'macro detail focus', 'focus stacking', 'bokeh background'], 
-                        hint: 'Depth of field approach for product emphasis'
-                    },
-                    { 
-                        name: 'styling', 
-                        label: 'Styling & Props', 
-                        type: 'text', 
-                        hint: 'Additional elements, props, lifestyle context for product presentation',
-                        examples: 'Examples: "Minimalist with single shadow" • "Lifestyle setting with coffee beans scattered" • "Tech environment with circuit board textures"'
-                    },
-                    { 
-                        name: 'quality', 
-                        label: 'Image Quality', 
-                        type: 'select', 
-                        options: ['4K ultra-high resolution', 'commercial photography quality', 'e-commerce optimized', 'advertising campaign quality', 'catalog photography'], 
-                        hint: 'Quality level and intended commercial use'
-                    },
-                    { 
-                        name: 'aspectRatio', 
-                        label: 'Aspect Ratio', 
-                        type: 'select', 
-                        options: ['1:1', '4:3', '3:4', '16:9'], 
-                        hint: 'Image dimensions for specific platform use'
-                    }
+                    { name: 'product', label: 'Product Description', type: 'textarea', hint: 'Detailed product description', examples: 'Examples: "Sleek titanium smartwatch with black leather band"' },
+                    { name: 'backgroundSetup', label: 'Background & Surface', type: 'select', options: ['seamless white background', 'seamless black background', 'gradient backdrop', 'marble surface', 'wooden table', 'fabric texture'], hint: 'Surface setup' },
+                    { name: 'lightingSetup', label: 'Professional Lighting', type: 'select', options: ['three-point studio lighting', 'softbox key light', 'ring light setup', 'dramatic side lighting', 'natural window light'], hint: 'Lighting configuration' },
+                    { name: 'cameraAngle', label: 'Product Angle', type: 'select', options: ['straight-on hero shot', '45-degree angle', 'overhead flat lay', 'low angle dramatic', 'three-quarter view'], hint: 'Viewing angle' },
+                    { name: 'focusStyle', label: 'Focus & Depth', type: 'select', options: ['tack sharp focus', 'shallow depth of field', 'macro detail focus', 'bokeh background'], hint: 'Depth of field' },
+                    { name: 'styling', label: 'Styling & Props', type: 'text', hint: 'Additional elements', examples: 'Examples: "Minimalist with single shadow"' },
+                    { name: 'quality', label: 'Image Quality', type: 'select', options: ['4K ultra-high resolution', 'commercial photography quality', 'e-commerce optimized'], hint: 'Quality level' },
+                    { name: 'aspectRatio', label: 'Aspect Ratio', type: 'select', options: ['1:1', '4:3', '3:4', '16:9'], hint: 'Image dimensions' }
                 ],
                 template: "A professional product photograph of {product}, {backgroundSetup}, {lightingSetup}, {cameraAngle}, {focusStyle}, {styling}, {quality}, {aspectRatio} aspect ratio"
             },
-
             'text-image': {
                 title: "📝 Text Integration Template",
-                description: "Generate images with accurate text rendering for logos, signage, and typography (25 character maximum)",
+                description: "Generate images with accurate text rendering (25 character max)",
                 fields: [
-                    { 
-                        name: 'text', 
-                        label: 'Text Content', 
-                        type: 'text', 
-                        hint: 'Exact text to render (maximum 25 characters for optimal quality)', 
-                        maxLength: 25,
-                        examples: 'Examples: "NANO AI" • "Coffee Shop" • "2024" • "SALE 50% OFF"'
-                    },
-                    { 
-                        name: 'textStyle', 
-                        label: 'Typography Style', 
-                        type: 'select', 
-                        options: ['bold modern sans-serif', 'elegant serif font', 'handwritten script', 'geometric display font', 'vintage retro lettering', 'minimalist thin font', 'industrial stencil', 'calligraphy brush'], 
-                        hint: 'Font style and typographic approach'
-                    },
-                    { 
-                        name: 'designType', 
-                        label: 'Design Application', 
-                        type: 'select', 
-                        options: ['logo design', 'poster title', 'storefront sign', 'business card', 'social media banner', 'product label', 'website header'], 
-                        hint: 'Intended use affects design approach and proportions'
-                    },
-                    { 
-                        name: 'colorScheme', 
-                        label: 'Color Treatment', 
-                        type: 'text', 
-                        hint: 'Text and background color relationships',
-                        examples: 'Examples: "White text on deep blue gradient" • "Gold metallic text on black" • "Rainbow gradient text" • "High contrast black and white"'
-                    },
-                    { 
-                        name: 'backgroundStyle', 
-                        label: 'Background Design', 
-                        type: 'text', 
-                        hint: 'Background elements, patterns, or environmental context',
-                        examples: 'Examples: "Clean minimalist white background" • "Textured concrete wall" • "Starry night sky" • "Abstract geometric shapes"'
-                    },
-                    { 
-                        name: 'visualEffects', 
-                        label: 'Visual Effects', 
-                        type: 'text', 
-                        hint: 'Special effects, shadows, glows, textures applied to text',
-                        examples: 'Examples: "Subtle drop shadow" • "Neon glow effect" • "3D extrusion" • "Metallic reflective surface" • "Glass transparency"'
-                    },
-                    { 
-                        name: 'brandStyle', 
-                        label: 'Brand Personality', 
-                        type: 'text', 
-                        hint: 'Overall aesthetic and personality the design should convey',
-                        examples: 'Examples: "Professional and trustworthy" • "Fun and playful" • "Luxury and premium" • "Tech-forward and innovative"'
-                    }
+                    { name: 'text', label: 'Text Content', type: 'text', hint: 'Maximum 25 characters', maxLength: 25, examples: 'Examples: "NANO AI" • "Coffee Shop"' },
+                    { name: 'textStyle', label: 'Typography Style', type: 'select', options: ['bold modern sans-serif', 'elegant serif font', 'handwritten script', 'geometric display font', 'vintage retro lettering', 'minimalist thin font'], hint: 'Font style' },
+                    { name: 'designType', label: 'Design Application', type: 'select', options: ['logo design', 'poster title', 'storefront sign', 'business card', 'social media banner', 'product label'], hint: 'Intended use' },
+                    { name: 'colorScheme', label: 'Color Treatment', type: 'text', hint: 'Text and background colors', examples: 'Examples: "White text on deep blue gradient"' },
+                    { name: 'backgroundStyle', label: 'Background Design', type: 'text', hint: 'Background elements', examples: 'Examples: "Clean minimalist white"' },
+                    { name: 'visualEffects', label: 'Visual Effects', type: 'text', hint: 'Effects applied to text', examples: 'Examples: "Subtle drop shadow" • "Neon glow effect"' },
+                    { name: 'brandStyle', label: 'Brand Personality', type: 'text', hint: 'Overall aesthetic', examples: 'Examples: "Professional and trustworthy"' }
                 ],
-                template: "A {designType} featuring the text \"{text}\" in {textStyle}, {colorScheme} color scheme, {backgroundStyle} background, {visualEffects}, conveying {brandStyle} aesthetic"
+                template: 'A {designType} featuring the text "{text}" in {textStyle}, {colorScheme} color scheme, {backgroundStyle} background, {visualEffects}, conveying {brandStyle} aesthetic'
             },
-
             'image-editing': {
                 title: "🔧 Precise Image Modification Template",
-                description: "Edit existing images with text-guided modifications while maintaining natural integration",
+                description: "Edit existing images with text-guided modifications",
                 fields: [
-                    { 
-                        name: 'action', 
-                        label: 'Editing Action', 
-                        type: 'select', 
-                        options: ['add new element', 'remove existing element', 'replace element', 'modify existing element', 'change colors/materials', 'adjust lighting'], 
-                        hint: 'Primary type of modification to perform'
-                    },
-                    { 
-                        name: 'targetElement', 
-                        label: 'Target Element', 
-                        type: 'text', 
-                        hint: 'Specific object, area, or element to modify in the original image',
-                        examples: 'Examples: "The red car in the parking lot" • "Person\'s clothing" • "Kitchen countertop" • "Background sky area"'
-                    },
-                    { 
-                        name: 'newElement', 
-                        label: 'New Element/Change', 
-                        type: 'textarea', 
-                        hint: 'Detailed description of what to add, replace with, or how to modify (if applicable)',
-                        examples: 'Examples: "Modern stainless steel refrigerator" • "Blooming cherry tree with pink flowers" • "Golden sunset lighting" • "Professional business suit"'
-                    },
-                    { 
-                        name: 'integration', 
-                        label: 'Integration Style', 
-                        type: 'text', 
-                        hint: 'How the change should blend with the existing image',
-                        examples: 'Examples: "Seamlessly matching existing lighting and shadows" • "Natural perspective and scale" • "Consistent with original photo style"'
-                    },
-                    { 
-                        name: 'preservation', 
-                        label: 'Elements to Preserve', 
-                        type: 'textarea', 
-                        hint: 'Specific aspects of the original image that must remain unchanged',
-                        examples: 'Examples: "All people and their expressions" • "Original lighting mood and time of day" • "Architectural details of the building" • "Natural proportions and perspective"'
-                    },
-                    { 
-                        name: 'styleConsistency', 
-                        label: 'Style Consistency', 
-                        type: 'text', 
-                        hint: 'Maintain specific photographic or artistic qualities',
-                        examples: 'Examples: "Match original photo\'s exposure and color grading" • "Maintain vintage film aesthetic" • "Keep professional studio lighting quality"'
-                    }
+                    { name: 'action', label: 'Editing Action', type: 'select', options: ['add new element', 'remove existing element', 'replace element', 'modify existing element', 'change colors/materials', 'adjust lighting'], hint: 'Type of modification' },
+                    { name: 'targetElement', label: 'Target Element', type: 'text', hint: 'What to modify', examples: 'Examples: "The red car in the parking lot"' },
+                    { name: 'newElement', label: 'New Element/Change', type: 'textarea', hint: 'What to add or change', examples: 'Examples: "Modern stainless steel refrigerator"' },
+                    { name: 'integration', label: 'Integration Style', type: 'text', hint: 'How to blend', examples: 'Examples: "Seamlessly matching existing lighting"' },
+                    { name: 'preservation', label: 'Elements to Preserve', type: 'textarea', hint: 'What must stay unchanged', examples: 'Examples: "All people and expressions"' },
+                    { name: 'styleConsistency', label: 'Style Consistency', type: 'text', hint: 'Maintain specific qualities', examples: 'Examples: "Match original exposure"' }
                 ],
                 template: "Using the provided image, {action} the {targetElement} with {newElement}. Ensure {integration} while preserving {preservation}. Maintain {styleConsistency} throughout the edit."
             },
-
             'style-transfer': {
-                title: "🎨 Artistic Style Transfer Template", 
-                description: "Transform photographs into specific artistic styles while preserving composition",
+                title: "🎨 Artistic Style Transfer Template",
+                description: "Transform photographs into artistic styles",
                 fields: [
-                    { 
-                        name: 'artistStyle', 
-                        label: 'Target Art Style', 
-                        type: 'text', 
-                        hint: 'Specific artist, art movement, or artistic technique to emulate',
-                        examples: 'Examples: "Van Gogh\'s Starry Night style" • "Impressionist painting like Monet" • "Art Nouveau poster design" • "Japanese woodblock print style"'
-                    },
-                    { 
-                        name: 'techniques', 
-                        label: 'Artistic Techniques', 
-                        type: 'textarea', 
-                        hint: 'Specific visual techniques, brushwork, color methods, or artistic approaches',
-                        examples: 'Examples: "Visible swirling brushstrokes and impasto texture" • "Pointillist dot technique with pure colors" • "Bold outlines with flat color areas" • "Soft watercolor washes and bleeding"'
-                    },
-                    { 
-                        name: 'colorApproach', 
-                        label: 'Color Treatment', 
-                        type: 'text', 
-                        hint: 'How colors should be transformed in the artistic style',
-                        examples: 'Examples: "Vibrant complementary color scheme" • "Muted earth tones with accent colors" • "High contrast dramatic lighting" • "Pastel color harmony"'
-                    },
-                    { 
-                        name: 'preservation', 
-                        label: 'Elements to Preserve', 
-                        type: 'text', 
-                        hint: 'What should remain recognizable from the original photograph',
-                        examples: 'Examples: "Original composition and subject placement" • "Facial features and expressions" • "Architectural structure and proportions" • "Overall scene layout"'
-                    },
-                    { 
-                        name: 'intensity', 
-                        label: 'Transformation Intensity', 
-                        type: 'select', 
-                        options: ['subtle artistic influence', 'moderate style transformation', 'strong artistic interpretation', 'complete style conversion'], 
-                        hint: 'How dramatically the style should transform the original image'
-                    },
-                    { 
-                        name: 'mediaType', 
-                        label: 'Artistic Medium', 
-                        type: 'select', 
-                        options: ['oil painting', 'watercolor', 'digital art', 'pencil drawing', 'charcoal sketch', 'pastel drawing', 'acrylic painting', 'mixed media'], 
-                        hint: 'Physical or digital medium the artwork should emulate'
-                    }
+                    { name: 'artistStyle', label: 'Target Art Style', type: 'text', hint: 'Artist or art movement', examples: 'Examples: "Van Gogh\'s Starry Night style"' },
+                    { name: 'techniques', label: 'Artistic Techniques', type: 'textarea', hint: 'Visual techniques', examples: 'Examples: "Visible swirling brushstrokes"' },
+                    { name: 'colorApproach', label: 'Color Treatment', type: 'text', hint: 'Color transformation', examples: 'Examples: "Vibrant complementary colors"' },
+                    { name: 'preservation', label: 'Elements to Preserve', type: 'text', hint: 'What stays recognizable', examples: 'Examples: "Original composition"' },
+                    { name: 'intensity', label: 'Transformation Intensity', type: 'select', options: ['subtle artistic influence', 'moderate style transformation', 'strong artistic interpretation', 'complete style conversion'], hint: 'How dramatic' },
+                    { name: 'mediaType', label: 'Artistic Medium', type: 'select', options: ['oil painting', 'watercolor', 'digital art', 'pencil drawing', 'charcoal sketch', 'pastel drawing', 'acrylic painting'], hint: 'Medium to emulate' }
                 ],
                 template: "Transform the provided photograph into {artistStyle}, incorporating {techniques} and {colorApproach} color treatment. Apply {intensity} while preserving {preservation}. Render as {mediaType} artwork."
             }
@@ -1075,38 +252,25 @@
         function updateProgress(step) {
             currentStep = step;
             const progressFill = document.getElementById('progressFill');
-            const fillWidth = ((step - 1) / 2) * 100;
-            progressFill.style.width = fillWidth + '%';
-            
+            progressFill.style.width = ((step - 1) / 2) * 100 + '%';
             for (let i = 1; i <= 3; i++) {
                 const stepEl = document.getElementById('step' + i);
                 stepEl.classList.remove('active', 'completed');
-                
-                if (i < step) {
-                    stepEl.classList.add('completed');
-                } else if (i === step) {
-                    stepEl.classList.add('active');
-                }
+                if (i < step) stepEl.classList.add('completed');
+                else if (i === step) stepEl.classList.add('active');
             }
         }
 
         function selectCategory(category) {
             selectedCategory = category;
             updateProgress(2);
-            
             document.querySelector('.page.active').classList.remove('active');
-            
-            if (category === 'text-to-image') {
-                document.getElementById('page2a').classList.add('active');
-            } else {
-                document.getElementById('page2b').classList.add('active');
-            }
+            document.getElementById(category === 'text-to-image' ? 'page2a' : 'page2b').classList.add('active');
         }
 
         function selectTemplate(template) {
             selectedTemplate = template;
             updateProgress(3);
-            
             document.querySelector('.page.active').classList.remove('active');
             loadTemplateForm(template);
             document.getElementById('page3').classList.add('active');
@@ -1114,188 +278,127 @@
 
         function loadTemplateForm(templateKey) {
             const template = templates[templateKey];
-            const content = document.getElementById('templateContent');
-            
-            let html = `
-                <h2 class="page-title">${template.title}</h2>
+            let html = `<h2 class="page-title">${template.title}</h2>
                 <p class="page-subtitle">${template.description}</p>
-                
-                <div class="template-form">
-                    <div class="form-section">
-                        <h3>⚙️ Template Configuration</h3>
-            `;
+                <div class="template-form"><div class="form-section"><h3>⚙️ Template Configuration</h3>`;
             
-            template.fields.forEach((field, index) => {
-                html += `
-                    <div class="field-group">
-                        <label class="field-label">${field.label}:</label>
-                        ${field.hint ? `<div class="field-hint">${field.hint}</div>` : ''}
-                        ${field.examples ? `<div class="field-examples">${field.examples}</div>` : ''}
-                `;
+            template.fields.forEach(field => {
+                html += `<div class="field-group"><label class="field-label">${field.label}:</label>`;
+                if (field.hint) html += `<div class="field-hint">${field.hint}</div>`;
+                if (field.examples) html += `<div class="field-examples">${field.examples}</div>`;
                 
                 if (field.type === 'textarea') {
                     html += `<textarea id="${field.name}" placeholder="${field.hint || ''}" oninput="updateLivePreview()"></textarea>`;
                 } else if (field.type === 'select') {
-                    html += `<select id="${field.name}" onchange="updateLivePreview()">
-                        <option value="">Choose ${field.label.toLowerCase()}...</option>`;
-                    field.options.forEach(option => {
-                        html += `<option value="${option}">${option}</option>`;
-                    });
+                    html += `<select id="${field.name}" onchange="updateLivePreview()"><option value="">Choose...</option>`;
+                    field.options.forEach(opt => html += `<option value="${opt}">${opt}</option>`);
                     html += `</select>`;
                 } else {
-                    const maxLength = field.maxLength ? `maxlength="${field.maxLength}"` : '';
-                    html += `<input type="text" id="${field.name}" placeholder="${field.hint || ''}" ${maxLength} oninput="updateLivePreview()">`;
+                    html += `<input type="text" id="${field.name}" placeholder="${field.hint || ''}" ${field.maxLength ? 'maxlength="'+field.maxLength+'"' : ''} oninput="updateLivePreview()">`;
                 }
-                
                 html += `</div>`;
             });
-
-            if (selectedCategory === 'text-to-image') {
-                html += `
-                    </div>
-                    <div class="config-section">
-                        <h4>⚙️ Imagen Configuration</h4>
-                        <div class="field-grid">
-                            <div class="field-group">
-                                <label class="field-label">Number of Images:</label>
-                                <select id="numberOfImages" onchange="updateLivePreview()">
-                                    <option value="1">1 image</option>
-                                    <option value="2">2 images</option>
-                                    <option value="3">3 images</option>
-                                    <option value="4" selected>4 images</option>
-                                </select>
-                            </div>
-                            <div class="field-group">
-                                <label class="field-label">Person Generation:</label>
-                                <select id="personGeneration" onchange="updateLivePreview()">
-                                    <option value="allow_adult" selected>Allow adults only</option>
-                                    <option value="allow_all">Allow adults and children</option>
-                                    <option value="dont_allow">Don't allow people</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } else {
-                html += `</div>`;
-            }
             
-            html += `
-                    <div class="form-section">
-                        <h3>🎯 Generated Prompt</h3>
-                        <div class="live-preview" id="livePreview">
-                            <div class="prompt-stats" id="promptStats">0 characters</div>
-                            Fill in the fields above to generate your optimized Imagen prompt...
-                        </div>
-                    </div>
-                    
-                    <div class="button-container">
-                        <button class="btn btn-primary" onclick="copyPrompt()">📋 Copy Prompt</button>
-                        <button class="btn btn-secondary" onclick="downloadPrompt()">💾 Download</button>
-                        <button class="btn btn-secondary" onclick="resetForm()">🔄 Start Over</button>
-                    </div>
+            html += `<div class="form-section"><h3>🎯 Generated Prompt</h3>
+                <div class="live-preview" id="livePrompt">
+                    <div class="prompt-stats" id="promptStats">0 characters</div>
+                    Fill in the fields above to generate your optimized  prompt...
+                </div></div>
+                <div class="button-container">
+                    <button class="btn btn-primary" onclick="copyPrompt()">📋 Copy Prompt</button>
+                    <button class="btn btn-secondary" onclick="copyForLLM()">🤖 Optimize with ChatGPT</button>
+                    <button class="btn btn-secondary" onclick="downloadPrompt()">💾 Download</button>
+                    <button class="btn btn-secondary" onclick="resetForm()">🔄 Start Over</button>
                 </div>
-            `;
+                <div class="platform-link-container">
+                    <h3>🚀 Ready to Generate with Nano Banana?</h3>
+                    <p>Take your optimized prompt to Google GEMINI </p>
+                    <a href="https:/https://gemini.google.com/" target="_blank" class="action-button platform">
+                        Launch Google Gemini →
+                    </a>
+                </div></div>`;
             
-            content.innerHTML = html;
+            document.getElementById('templateContent').innerHTML = html;
             updateLivePreview();
         }
 
         function updateLivePreview() {
             const template = templates[selectedTemplate];
             if (!template) return;
-            
             let prompt = template.template;
-            let hasEmptyFields = false;
-            
             template.fields.forEach(field => {
-                const element = document.getElementById(field.name);
-                const value = element ? element.value.trim() : '';
-                const placeholder = `{${field.name}}`;
-                
-                if (value) {
-                    prompt = prompt.replace(new RegExp(placeholder, 'g'), value);
-                } else {
-                    prompt = prompt.replace(new RegExp(placeholder, 'g'), `[${field.label}]`);
-                    hasEmptyFields = true;
-                }
+                const el = document.getElementById(field.name);
+                const val = el ? el.value.trim() : '';
+                prompt = prompt.replace(new RegExp(`{${field.name}}`, 'g'), val || `[${field.label}]`);
             });
-
             if (selectedCategory === 'text-to-image') {
-                const numImages = document.getElementById('numberOfImages')?.value || '4';
-                const personGen = document.getElementById('personGeneration')?.value || 'allow_adult';
-                
-                prompt += `\n\n# Configuration\n• Generate ${numImages} images\n• Person generation: ${personGen}`;
+                const num = document.getElementById('numberOfImages')?.value || '4';
+                const person = document.getElementById('personGeneration')?.value || 'allow_adult';
             }
-            
-            const previewEl = document.getElementById('livePreview');
-            const statsEl = document.getElementById('promptStats');
-            
-            previewEl.textContent = prompt;
-            if (statsEl) {
-                statsEl.textContent = `${prompt.length} characters`;
-            }
+            // Remove unwanted lines from live preview
+            prompt = prompt.replace(/# Configuration\n?/g, '').replace(/• Generate 4 images\n?/g, '').replace(/• Person generation: allow_adult\n?/g, '');
+            document.getElementById('livePrompt').textContent = prompt;
+            const stats = document.getElementById('promptStats');
+            if (stats) stats.textContent = `${prompt.length} characters`;
         }
 
         function copyPrompt() {
-            const promptText = document.getElementById('livePreview').textContent;
-            
-            if (promptText.includes('[') && promptText.includes(']')) {
-                alert("Please fill in all required fields first!");
-                return;
-            }
-            
-            navigator.clipboard.writeText(promptText).then(() => {
-                const btn = event.target;
-                const originalText = btn.innerHTML;
+            const text = document.getElementById('livePrompt').textContent;
+            if (text.includes('[')) { alert("Please fill in all required fields first!"); return; }
+            const btn = event.target;
+            const orig = btn.innerHTML;
+            navigator.clipboard.writeText(text).then(() => {
                 btn.innerHTML = '✅ Copied!';
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                }, 2000);
+                setTimeout(() => btn.innerHTML = orig, 2000);
             }).catch(() => {
-                const textArea = document.createElement('textarea');
-                textArea.value = promptText;
-                document.body.appendChild(textArea);
-                textArea.select();
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
                 document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert("Prompt copied to clipboard!");
+                document.body.removeChild(ta);
+                btn.innerHTML = '✅ Copied!';
+                setTimeout(() => btn.innerHTML = orig, 2000);
+            });
+        }
+
+        function copyForLLM() {
+            const text = document.getElementById('livePrompt').textContent;
+            if (text.includes('[')) { alert("Please fill in all required fields first!"); return; }
+            const llm = `Optimize this Nano-Banana prompt for maximum image quality and visual impact:\n\n${text}\n\nPlease enhance this prompt by ensuring proper formatting and structure for Google's model, enhancing detail clarity and visual specificity that would improve Nano-Banana's output quality and ensuring the prompt follows their best practices\n\nReturn only the improved Nano-banana prompt, ready to use.`;
+            const btn = event.target;
+            const orig = btn.innerHTML;
+            navigator.clipboard.writeText(llm).then(() => {
+                btn.innerHTML = '✅ Copied! Opening ChatGPT...';
+                btn.disabled = true;
+                setTimeout(() => {
+                    window.open('https://chatgpt.com/', '_blank');
+                    setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; }, 3000);
+                }, 500);
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = llm;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                btn.innerHTML = '✅ Copied! Opening ChatGPT...';
+                window.open('https://chatgpt.com/', '_blank');
+                setTimeout(() => btn.innerHTML = orig, 3000);
             });
         }
 
         function downloadPrompt() {
             const template = templates[selectedTemplate];
-            const promptText = document.getElementById('livePreview').textContent;
-            const filename = `NanoBanana_${selectedTemplate}_${new Date().toISOString().slice(0,10)}.txt`;
-            
-            const content = `NANO BANANA - IMAGEN PROMPT GENERATOR
-=======================================
-
-Template: ${template.title}
-Generated: ${new Date().toLocaleString()}
-Category: ${selectedCategory}
-
-GENERATED PROMPT:
-${promptText}
-
-USAGE INSTRUCTIONS:
-• This prompt is optimized for Google's Imagen image generation model
-• Copy the generated prompt and use it with Imagen API or interface
-• For best results, use the exact prompt without modifications
-• Imagen supports aspect ratios: 1:1, 4:3, 3:4, 16:9, 9:16
-
-TEMPLATE DETAILS:
-${template.description}
-
-Generated by Nano Banana Professional Imagen Prompt Generator
-Visit: https://your-domain.com for more templates and updates
-`;
-
+            const text = document.getElementById('livePrompt').textContent;
+            // Remove unwanted lines from downloaded prompt
+            const cleanText = text.replace(/# Configuration\n?/g, '').replace(/• Generate 4 images\n?/g, '').replace(/• Person generation: allow_adult\n?/g, '');
+            const content = `NANO BANANA - Nano-Banana PROMPT GENERATOR\n${'='.repeat(39)}\nTemplate: ${template.title}\nGenerated: ${new Date().toLocaleString()}\nCategory: ${selectedCategory}\n\nGENERATED PROMPT:\n${cleanText}\n\nUSAGE INSTRUCTIONS:\n• Optimized for Google's Nano\n• Use with Nano-Banana API or Google AI Studio\n• Supports aspect ratios: 1:1, 4:3, 3:4, 16:9, 9:16`;
             const blob = new Blob([content], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = filename;
+            a.download = `NanoBanana_${selectedTemplate}_${new Date().toISOString().slice(0,10)}.txt`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1303,9 +406,7 @@ Visit: https://your-domain.com for more templates and updates
         }
 
         function resetForm() {
-            if (confirm("Start over? All progress will be lost.")) {
-                location.reload();
-            }
+            if (confirm("Start over? All progress will be lost.")) location.reload();
         }
 
         function goBack() {
@@ -1318,13 +419,7 @@ Visit: https://your-domain.com for more templates and updates
         function goBackToTemplates() {
             updateProgress(2);
             document.querySelector('.page.active').classList.remove('active');
-            
-            if (selectedCategory === 'text-to-image') {
-                document.getElementById('page2a').classList.add('active');
-            } else {
-                document.getElementById('page2b').classList.add('active');
-            }
-            
+            document.getElementById(selectedCategory === 'text-to-image' ? 'page2a' : 'page2b').classList.add('active');
             selectedTemplate = '';
         }
 

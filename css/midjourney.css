@@ -1,0 +1,177 @@
+body {
+    font-family: 'Calibri', Arial, sans-serif;
+    max-width: 8.5in;
+    margin: 0 auto;
+    padding: 1in;
+}
+
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* === HEADER === */
+.header {
+    text-align: center;
+    border-bottom: 3px solid #6366f1;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #6366f1;
+    font-size: 28pt;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.subtitle {
+    color: #64748b;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+h2 {
+    color: #1e293b;
+    font-size: 16pt;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* === SECTION HEADERS === */
+.section-header {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin: 25px 0 15px 0;
+    font-weight: bold;
+    text-align: center;
+    font-size: 14pt;
+}
+
+.workflow-indicator {
+    display: inline-block;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* === FIELD GROUPS === */
+.field-group {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-left: 4px solid #6366f1;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.field-group:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+}
+
+/* === TEMPLATE BOX === */
+.template-box {
+    border: 2px dashed #6366f1;
+    padding: 20px;
+    margin: 15px 0;
+    background: white;
+    border-radius: 10px;
+}
+
+/* === CAMPAIGN TYPE === */
+.campaign-type {
+    background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+    padding: 20px;
+    margin: 15px 0;
+    border-left: 4px solid #8b5cf6;
+    border-radius: 10px;
+}
+
+/* === BUTTON CONTAINER === */
+.button-container {
+    text-align: center;
+    margin: 30px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-radius: 15px;
+}
+
+/* === LIVE PROMPT === */
+#livePrompt {
+    min-height: 250px;
+    border: 2px solid #e2e8f0;
+    padding: 20px;
+    background: linear-gradient(135deg, #1e293b, #334155);
+    color: #e2e8f0;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    overflow-y: auto;
+    max-height: 500px;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* === PLATFORM LINK SECTION === */
+.platform-link-container {
+    text-align: center;
+    margin: 30px 0;
+    padding: 25px;
+    background: linear-gradient(135deg, #f8fafc, #ffffff);
+    border-radius: 15px;
+    border: 2px dashed #8b5cf6;
+}
+
+.platform-link-container h3 {
+    color: #1e293b;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.platform-link-container p {
+    color: #64748b;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    body {
+        padding: 20px;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    .action-button {
+        display: block;
+        margin: 10px 0;
+        width: 100%;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .section-header {
+        font-size: 1rem;
+        padding: 12px 15px;
+    }
+}

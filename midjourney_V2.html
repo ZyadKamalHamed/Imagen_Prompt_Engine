@@ -3,230 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midjourney Storyboard Prompt Engineering Template</title>
-    <style>
-        body {
-            font-family: 'Calibri', Arial, sans-serif;
-            line-height: 1.6;
-            max-width: 8.5in;
-            margin: 0 auto;
-            padding: 1in;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-        .header {
-            text-align: center;
-            border-bottom: 3px solid #6366f1;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-        h1 {
-            color: #6366f1;
-            font-size: 28pt;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        .subtitle {
-            color: #64748b;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        h2 {
-            color: #1e293b;
-            font-size: 16pt;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 8px;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            background: linear-gradient(90deg, #6366f1, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .section-header {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin: 25px 0 15px 0;
-            font-weight: bold;
-            text-align: center;
-            font-size: 14pt;
-        }
-        .field-group {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-            border-left: 4px solid #6366f1;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        .field-group:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
-        }
-        .field-label {
-            font-weight: bold;
-            color: #1e293b;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        .field-example {
-            font-weight: normal;
-            color: #64748b;
-            font-style: italic;
-            margin-left: 15px;
-            font-size: 12px;
-            margin-bottom: 8px;
-        }
-        .instructions {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border: 1px solid #f59e0b;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            font-size: 11pt;
-        }
-        .template-box {
-            border: 2px dashed #6366f1;
-            padding: 20px;
-            margin: 15px 0;
-            background: white;
-            border-radius: 10px;
-        }
-        input[type="text"], textarea, select {
-            width: 100%;
-            border: 2px solid #e2e8f0;
-            padding: 8px 12px;
-            font-family: inherit;
-            box-sizing: border-box;
-            margin-top: 5px;
-            border-radius: 6px;
-            transition: border-color 0.3s ease;
-        }
-        input[type="text"]:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-        textarea {
-            height: 70px;
-            resize: vertical;
-        }
-        .campaign-type {
-            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
-            padding: 20px;
-            margin: 15px 0;
-            border-left: 4px solid #8b5cf6;
-            border-radius: 10px;
-        }
-        .button-container {
-            text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-            border-radius: 15px;
-        }
-        .action-button {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            margin: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-        }
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
-        }
-        .action-button.download {
-            background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-        }
-        .action-button.download:hover {
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6);
-        }
-        .action-button.llm {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-        }
-        .action-button.llm:hover {
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.6);
-        }
-        #livePrompt {
-            min-height: 250px;
-            border: 2px solid #e2e8f0;
-            padding: 20px;
-            background: linear-gradient(135deg, #1e293b, #334155);
-            color: #e2e8f0;
-            white-space: pre-wrap;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            overflow-y: auto;
-            max-height: 500px;
-            border-radius: 10px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .pro-tip {
-            margin-top: 40px;
-            padding: 25px;
-            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
-            border: 1px solid #8b5cf6;
-            text-align: center;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
-        }
-        .workflow-indicator {
-            display: inline-block;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        @media (max-width: 768px) {
-            body {
-                padding: 20px;
-            }
-            .container {
-                padding: 20px;
-            }
-            .action-button {
-                display: block;
-                margin: 10px 0;
-                width: 100%;
-            }
-        }
-    </style>
+    <meta name="description" content="Professional Midjourney  prompt engineering template for cinematic visuals">
+    <meta name="keywords" content="Midjourney, prompt engineering, cinematography, AI art">
+    <title>Midjourney Prompt Engineering Template</title>
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/midjourney.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎬 MIDJOURNEY STORYBOARD PROMPT TEMPLATE</h1>
+            <h1>🎬 MIDJOURNEY PROMPT TEMPLATE</h1>
             <p class="subtitle"><strong>Professional Cinematic Prompting for Visual Storytelling</strong></p>
         </div>
 
         <div class="instructions">
-            <strong>🎯 Instructions:</strong> This template follows a cinematographer's workflow from story concept to technical finishing. Fill in each section to build the perfect Midjourney storyboard prompt. Your complete prompt updates automatically as you type!
+            <strong>🎯 Instructions:</strong> This template follows a cinematographer's workflow from story concept to technical finishing. Fill in each section to build the perfect Midjourney prompt. Your complete prompt updates automatically as you type!
         </div>
 
         <div class="campaign-type">
-            <strong>🎬 Storyboard Project:</strong> <input type="text" id="projectName" placeholder="Enter your project/scene name here">
+            <strong>🎬  Project  (Optional):</strong> <input type="text" id="projectName" placeholder="Enter your project/scene name here">
             <br><br>
-            <strong>📋 Scene Type:</strong> <input type="text" id="sceneType" placeholder="e.g., Opening scene, Chase sequence, Character introduction, Climax moment">
+            <strong>📋 Scene Type (Optional):</strong> <input type="text" id="sceneType" placeholder="e.g., Opening scene, Chase sequence, Character introduction, Climax moment">
         </div>
 
         <div class="section-header">
@@ -397,21 +196,30 @@
 
         <h2>🎬 LIVE MIDJOURNEY PROMPT PREVIEW</h2>
         <div class="instructions">
-            <strong>🚀 Auto-Generated:</strong> Your complete Midjourney prompt builds automatically as you fill in the fields above. Copy the prompt and paste it directly into Midjourney for professional storyboard results!
+            <strong>🚀 Auto-Generated:</strong> Your complete Midjourney prompt builds automatically as you fill in the fields above. Copy the prompt and paste it directly into Midjourney for professional results!
         </div>
         
         <div class="template-box">
             <div class="field-label"><strong>Complete Midjourney Prompt:</strong></div>
-            <div id="livePrompt">Your Midjourney storyboard prompt will appear here as you fill in the fields above...</div>
+            <div id="livePrompt">Your Midjourney prompt will appear here as you fill in the fields above...</div>
         </div>
 
         <div class="button-container">
             <button onclick="copyPrompt()" class="action-button">📋 Copy Midjourney Prompt</button>
-            <button onclick="downloadDocument()" class="action-button download">📄 Download Storyboard Document</button>
-            <button onclick="copyForLLM()" class="action-button llm">🤖 Copy for ChatGPT Refinement</button>
+            <button onclick="downloadDocument()" class="action-button download">📄 Download full page as Document</button>
+            <button onclick="copyForLLM()" class="action-button llm">🤖 Optimize with ChatGPT</button>
         </div>
 
-        <h2>📝 PROJECT NOTES</h2>
+        <!-- NEW: Midjourney Platform Link -->
+        <div class="platform-link-container">
+            <h3>🚀 Ready to Generate?</h3>
+            <p>Take your prompt to Midjourney</p>
+            <a href="https://www.midjourney.com" target="_blank" class="action-button platform">
+                Launch Midjourney →
+            </a>
+        </div>
+
+        <h2>📝 PROJECT NOTES (OPTIONAL) </h2>
         <div class="template-box">
             <div class="field-group">
                 <div class="field-label"><strong>Story Context:</strong></div>
@@ -432,10 +240,6 @@
                 <div class="field-label"><strong>Alternative Versions:</strong></div>
                 <textarea id="alternativeVersions" placeholder="Ideas for alternative angles or variations of this shot"></textarea>
             </div>
-        </div>
-
-        <div class="pro-tip">
-            <strong>🎬 Pro Storyboarding Tip:</strong> This template follows professional cinematography workflow. Your Midjourney prompt builds automatically with optimal parameter placement. Use consistent seeds across shots for visual continuity in your storyboard sequence!
         </div>
     </div>
 
@@ -482,7 +286,6 @@
             const finalAspectRatio = fields.aspectRatio === 'custom' ? fields.customAspectRatio : fields.aspectRatio;
 
             let prompt = "";
-            
             const promptParts = [];
             
             if (fields.subject) promptParts.push(fields.subject);
@@ -525,17 +328,24 @@
                 prompt += " " + parameters.join(" ");
             }
 
-            document.getElementById('livePrompt').textContent = prompt || "Your Midjourney storyboard prompt will appear here as you fill in the fields above...";
+            document.getElementById('livePrompt').textContent = prompt || "Your Midjourney prompt will appear here as you fill in the fields above...";
         }
 
         function copyPrompt() {
             const promptText = document.getElementById('livePrompt').textContent;
-            if (promptText === "Your Midjourney storyboard prompt will appear here as you fill in the fields above...") {
+            if (promptText === "Your Midjourney prompt will appear here as you fill in the fields above...") {
                 alert("Please fill in some fields first to generate your prompt!");
                 return;
             }
+            
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            
             navigator.clipboard.writeText(promptText).then(() => {
-                alert("Midjourney prompt copied to clipboard! You can now paste it directly into Midjourney.");
+                btn.innerHTML = '✅ Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
             }).catch(() => {
                 const textArea = document.createElement('textarea');
                 textArea.value = promptText;
@@ -543,31 +353,46 @@
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                alert("Midjourney prompt copied to clipboard!");
+                btn.innerHTML = '✅ Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
             });
         }
 
         function copyForLLM() {
             const promptText = document.getElementById('livePrompt').textContent;
-            if (promptText === "Your Midjourney storyboard prompt will appear here as you fill in the fields above...") {
+            if (promptText === "Your Midjourney  prompt will appear here as you fill in the fields above...") {
                 alert("Please fill in some fields first to generate your prompt!");
                 return;
             }
             
-            const llmPrompt = `Please refine and optimize this Midjourney storyboard prompt for maximum cinematic effectiveness. Improve the visual language to be more specific and cinematic, ensure proper Midjourney parameter formatting, and enhance the storytelling impact while maintaining the core vision:
+            const llmPrompt = `Optimize this Midjourney  prompt for maximum cinematic effectiveness and professional results:
 
 ${promptText}
 
-Please return an improved version that:
-1. Uses more precise cinematic and visual language
-2. Optimizes parameter placement and formatting for Midjourney
-3. Enhances storytelling and emotional impact
-4. Removes any redundancy while maintaining all key elements
-5. Follows Midjourney best practices for storyboarding
-6. Ensures the prompt will generate professional storyboard-quality images`;
+Please enhance this prompt by:
+Using more precise cinematic and visual language, optimizing parameter placement and formatting for Midjourney best practices
+and lastly, ensuring the prompt will generate professional-quality images
 
+Return only the improved Midjourney prompt, ready to use.`;
+
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            
             navigator.clipboard.writeText(llmPrompt).then(() => {
-                alert("ChatGPT refinement prompt copied! Paste this into ChatGPT or Claude to get an optimized Midjourney prompt.");
+                btn.innerHTML = '✅ Copied! Opening ChatGPT...';
+                btn.disabled = true;
+                
+                // Open ChatGPT in new tab
+                setTimeout(() => {
+                    window.open('https://chatgpt.com/', '_blank');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }, 3000);
+                }, 500);
             }).catch(() => {
                 const textArea = document.createElement('textarea');
                 textArea.value = llmPrompt;
@@ -575,7 +400,13 @@ Please return an improved version that:
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                alert("ChatGPT refinement prompt copied!");
+                
+                btn.innerHTML = '✅ Copied! Opening ChatGPT...';
+                window.open('https://chatgpt.com/', '_blank');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 3000);
             });
         }
 
@@ -643,6 +474,7 @@ Please return an improved version that:
             URL.revokeObjectURL(url);
         }
 
+        // Initialize event listeners
         document.addEventListener('DOMContentLoaded', function() {
             const allInputs = document.querySelectorAll('input[type="text"], textarea, select');
             allInputs.forEach(input => {
