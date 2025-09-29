@@ -12,7 +12,7 @@ jobs:
       
       - name: Push to HuggingFace
         run: |
-          git remote add hf https://huggingface.co/spaces/24Zyad/Image_Gen_Prompt_Engine
+          git remote add hf https://huggingface.co/spaces/${{ secrets.HF_USERNAME }}/Image_Gen_Prompt_Engine
           git push hf main
         env:
-          HF_TOKEN: HF_TOKEN
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
