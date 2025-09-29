@@ -1,7 +1,5 @@
 
 Professional AI prompt engineering templates for creating perfect prompts across different platforms and use cases.
-
-[![Live Demo](COMING SOON)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ## 🚀 Features
