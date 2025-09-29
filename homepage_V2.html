@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The General Store - AI Prompt Templates</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #fbbf24 100%);
+            min-height: 100vh;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 50px 0;
+            background: white;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .template-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .template-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+        }
+
+        .template-header {
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .midjourney-header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+
+        .nano-banana-header {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+        }
+
+        .template-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .template-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .template-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .template-body {
+            padding: 30px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-list li::before {
+            content: "✨";
+            font-size: 1.2rem;
+        }
+
+        .launch-btn {
+            width: 100%;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .midjourney-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .midjourney-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.6);
+        }
+
+        .nano-banana-btn {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+        }
+
+        .nano-banana-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(251, 191, 36, 0.6);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .templates-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .template-title {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>THE GENERAL STORE</h1>
+            <p class="subtitle">Professional AI Prompt Engineering Templates</p>
+            <p class="description">Your one-stop shop for creating perfect AI prompts. Choose from our specialized templates designed for different AI platforms and use cases.</p>
+        </div>
+
+        <div class="templates-grid">
+            <!-- Midjourney Template -->
+            <div class="template-card" onclick="openMidjourney()">
+                <div class="template-header midjourney-header">
+                    <span class="template-icon">🎬</span>
+                    <h2 class="template-title">MIDJOURNEY</h2>
+                    <p class="template-subtitle">Storyboard & Cinematic Prompts</p>
+                </div>
+                <div class="template-body">
+                    <ul class="feature-list">
+                        <li>Professional cinematography workflow</li>
+                        <li>19 specialized prompt categories</li>
+                        <li>Camera angles & lighting controls</li>
+                        <li>Aspect ratio & composition tools</li>
+                        <li>Live prompt preview</li>
+                        <li>Download & refinement options</li>
+                    </ul>
+                    <button class="launch-btn midjourney-btn">Launch Midjourney Template</button>
+                </div>
+            </div>
+
+            <!-- Nano Banana Template -->
+            <div class="template-card" onclick="openNanoBanana()">
+                <div class="template-header nano-banana-header">
+                    <span class="template-icon">🍌</span>
+                    <h2 class="template-title">NANO BANANA</h2>
+                    <p class="template-subtitle">AI Image Generation & Editing</p>
+                </div>
+                <div class="template-body">
+                    <ul class="feature-list">
+                        <li>Image generation templates</li>
+                        <li>Photo editing & manipulation</li>
+                        <li>Style transfer & composition</li>
+                        <li>Product photography prompts</li>
+                        <li>Text-to-image optimization</li>
+                        <li>Professional prompt examples</li>
+                    </ul>
+                    <button class="launch-btn nano-banana-btn">Launch Nano Banana Template</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>The General Store</strong> - Created for professional AI prompt engineering</p>
+            <p>Choose your template above to start creating perfect AI prompts</p>
+        </div>
+    </div>
+
+    <script>
+        function openMidjourney() {
+            // For single file - show Midjourney section
+            // For separate files - navigate to midjourney.html
+            window.location.href = 'midjourney.html'; // Change to 'midjourney.html' if using separate files
+        }
+
+        function openNanoBanana() {
+            // For single file - show Nano Banana section  
+            // For separate files - navigate to nano-banana.html
+            window.location.href = 'nano-banana.html'; // Change to 'nano-banana.html' if using separate files
+        }
+    </script>
+</body>
+</html>

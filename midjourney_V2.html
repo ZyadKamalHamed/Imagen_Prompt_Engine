@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midjourney Storyboard Prompt Engineering Template</title>
+    <style>
+        body {
+            font-family: 'Calibri', Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 1in;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #6366f1;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #6366f1;
+            font-size: 28pt;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .subtitle {
+            color: #64748b;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        h2 {
+            color: #1e293b;
+            font-size: 16pt;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 25px 0 15px 0;
+            font-weight: bold;
+            text-align: center;
+            font-size: 14pt;
+        }
+        .field-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-left: 4px solid #6366f1;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .field-group:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+        }
+        .field-label {
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .field-example {
+            font-weight: normal;
+            color: #64748b;
+            font-style: italic;
+            margin-left: 15px;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        .instructions {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 1px solid #f59e0b;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 11pt;
+        }
+        .template-box {
+            border: 2px dashed #6366f1;
+            padding: 20px;
+            margin: 15px 0;
+            background: white;
+            border-radius: 10px;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            border: 2px solid #e2e8f0;
+            padding: 8px 12px;
+            font-family: inherit;
+            box-sizing: border-box;
+            margin-top: 5px;
+            border-radius: 6px;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        textarea {
+            height: 70px;
+            resize: vertical;
+        }
+        .campaign-type {
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #8b5cf6;
+            border-radius: 10px;
+        }
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 15px;
+        }
+        .action-button {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            margin: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+        }
+        .action-button.download {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        .action-button.download:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6);
+        }
+        .action-button.llm {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+        .action-button.llm:hover {
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.6);
+        }
+        #livePrompt {
+            min-height: 250px;
+            border: 2px solid #e2e8f0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: #e2e8f0;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-y: auto;
+            max-height: 500px;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .pro-tip {
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+            border: 1px solid #8b5cf6;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+        }
+        .workflow-indicator {
+            display: inline-block;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            .container {
+                padding: 20px;
+            }
+            .action-button {
+                display: block;
+                margin: 10px 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 MIDJOURNEY STORYBOARD PROMPT TEMPLATE</h1>
+            <p class="subtitle"><strong>Professional Cinematic Prompting for Visual Storytelling</strong></p>
+        </div>
+
+        <div class="instructions">
+            <strong>🎯 Instructions:</strong> This template follows a cinematographer's workflow from story concept to technical finishing. Fill in each section to build the perfect Midjourney storyboard prompt. Your complete prompt updates automatically as you type!
+        </div>
+
+        <div class="campaign-type">
+            <strong>🎬 Storyboard Project:</strong> <input type="text" id="projectName" placeholder="Enter your project/scene name here">
+            <br><br>
+            <strong>📋 Scene Type:</strong> <input type="text" id="sceneType" placeholder="e.g., Opening scene, Chase sequence, Character introduction, Climax moment">
+        </div>
+
+        <div class="section-header">
+            <span class="workflow-indicator">STEP 1</span>
+            STORY FOUNDATION - What & Why
+        </div>
+
+        <div class="template-box">
+            <div class="field-group">
+                <div class="field-label"><strong>Subject / Primary Focus:</strong></div>
+                <div class="field-example">young barista wiping counter, red vintage car parked, tall lighthouse on cliff, two kids arguing by a fountain</div>
+                <textarea id="subject" placeholder="Describe what the scene is about - the main subject or focal point"></textarea>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Action / Pose / Expression:</strong></div>
+                <div class="field-example">reaching for a door handle, laughing head thrown back, staring into distance, fists clenched</div>
+                <textarea id="action" placeholder="What is the subject doing? Body language, facial expressions, movement"></textarea>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Mood / Emotion / Tone:</strong></div>
+                <div class="field-example">melancholic, tense, joyful, mysterious, hopeful</div>
+                <input type="text" id="mood" placeholder="One-word emotional guide for the scene">
+            </div>
+        </div>
+
+        <div class="section-header">
+            <span class="workflow-indicator">STEP 2</span>
+            CAMERA SETUP - How We See It
+        </div>
+
+        <div class="template-box">
+            <div class="field-group">
+                <div class="field-label"><strong>Shot Style / Visual Style:</strong></div>
+                <div class="field-example">photorealistic, cinematic, animated, watercolor painting, high-fashion editorial, pixel art, isometric illustration</div>
+                <input type="text" id="shotStyle" placeholder="High-level render aesthetic and overall visual approach">
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Camera Angle / Shot Type:</strong></div>
+                <div class="field-example">bird's-eye view, worm's-eye low angle, eye-level, over-the-shoulder (OTS), close-up (CU), extreme close-up (ECU), long shot, establishing shot</div>
+                <input type="text" id="cameraAngle" placeholder="How the 'camera' views the subject">
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Camera Lens / Focal Length:</strong></div>
+                <div class="field-example">35mm, 50mm (nifty fifty), 85mm portrait lens, 14mm wide-angle, fisheye lens, telephoto 200mm, shot on Hasselblad</div>
+                <input type="text" id="lens" placeholder="Lens type for perspective, field of view and bokeh">
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Aspect Ratio / Framing:</strong></div>
+                <div class="field-example">--ar 16:9 (widescreen storyboard), --ar 1:1 (square), --ar 9:16 (vertical/mobile), --ar 2.39:1 (cinematic widescreen)</div>
+                <select id="aspectRatio">
+                    <option value="">Select aspect ratio...</option>
+                    <option value="--ar 16:9">--ar 16:9 (Widescreen/TV)</option>
+                    <option value="--ar 2.39:1">--ar 2.39:1 (Cinematic)</option>
+                    <option value="--ar 1:1">--ar 1:1 (Square/Instagram)</option>
+                    <option value="--ar 9:16">--ar 9:16 (Vertical/Mobile)</option>
+                    <option value="--ar 4:3">--ar 4:3 (Traditional)</option>
+                    <option value="--ar 3:2">--ar 3:2 (Photography)</option>
+                    <option value="custom">Custom ratio...</option>
+                </select>
+                <input type="text" id="customAspectRatio" placeholder="Enter custom aspect ratio (e.g., --ar 21:9)" style="display:none; margin-top:10px;">
+            </div>
+        </div>
+
+        <div class="section-header">
+            <span class="workflow-indicator">STEP 3</span>
+            COMPOSITION - Visual Design
+        </div>
+
+        <div class="template-box">
+            <div class="field-group">
+                <div class="field-label"><strong>Composition / Rule of Thirds / Focal Placement:</strong></div>
+                <div class="field-example">subject on left third, negative space on right, symmetrical composition, foreground element framing subject, leading lines toward subject</div>
+                <textarea id="composition" placeholder="Composition instructions and placement guidelines"></textarea>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Aperture / Depth of Field:</strong></div>
+                <div class="field-example">f/1.8 shallow depth of field, bokeh, f/8 deep focus, tilt-shift shallow plane</div>
+                <input type="text" id="aperture" placeholder="Background blur and focus control">
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Secondary Elements / Background:</strong></div>
+                <div class="field-example">crowded tram in background, street market stalls, abandoned playground</div>
+                <textarea id="background" placeholder="Supporting scene items and background elements"></textarea>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <span class="workflow-indicator">STEP 4</span>
+            LIGHTING & ATMOSPHERE - Mood Setting
+        </div>
+
+        <div class="template-box">
+            <div class="field-group">
+                <div class="field-label"><strong>Lighting (Direction & Quality):</strong></div>
+                <div class="field-example">golden hour rim light, soft diffused overcast light, harsh studio spotlight, neon rim lights, backlit silhouette, high-contrast chiaroscuro</div>
+                <textarea id="lighting" placeholder="Light direction, quality, and mood - crucial for atmosphere"></textarea>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Time of Day / Weather:</strong></div>
+                <div class="field-example">dawn mist, midday bright sun, rainy night with reflections, snowfall at dusk</div>
+                <input type="text" id="timeWeather" placeholder="Environmental conditions that set atmosphere">
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Colour Palette / Grading:</strong></div>
+                <div class="field-example">muted teal and orange, pastel pinks and creams, monochrome blue, Kodak Portra look, cinematic teal/orange grade</div>
+                <input type="text" id="colorPalette" placeholder="Specific colors or film looks">
+            </div>
+        </div>
+
+        <div class="section-header">
+            <span class="workflow-indicator">STEP 5</span>
+            DETAILS & STYLING - Scene Dressing
+        </div>
+
+        <div class="template-box">
+            <div class="field-group">
+                <div class="field-label"><strong>Materials / Textures / Surface Details:</strong></div>
+                <div class="field-example">wet asphalt reflections, brushed metal, peeling paint, velvet upholstery</div>
+                <textarea id="materials" placeholder="Close-up tactile information and surface qualities"></textarea>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Clothing / Wardrobe / Props:</strong></div>
+                <div class="field-example">80s leather jacket, school uniform with crest, rusty toolbox on floor, paper coffee cups</div>
+                <textarea id="wardrobe" placeholder="Character design elements and scene props"></textarea>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Reference Artists / Art Movement:</strong></div>
+                <div class="field-example">in style of Hayao Miyazaki, Rembrandt-inspired lighting, Bauhaus minimalism</div>
+                <input type="text" id="artistReference" placeholder="Stylistic inspiration (respect copyright/usage)">
+            </div>
+        </div>
+
+        <div class="section-header">
+            <span class="workflow-indicator">STEP 6</span>
+            TECHNICAL FINISHING - Midjourney Optimization
+        </div>
+
+        <div class="template-box">
+            <div class="field-group">
+                <div class="field-label"><strong>Rendering Engine / Finish / Post-Processing:</strong></div>
+                <div class="field-example">Octane render, Unreal Engine cinematic, film grain, high dynamic range (HDR), polished photoreal</div>
+                <input type="text" id="rendering" placeholder="Technical keywords that affect polish and finish">
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Negative Prompts / Exclusions:</strong></div>
+                <div class="field-example">--no text, --no watermark, --no extra limbs, --no people, no logos, no brand names</div>
+                <textarea id="negativePrompts" placeholder="What to avoid using --no parameter or negative phrasing"></textarea>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Seed / Reproducibility:</strong></div>
+                <div class="field-example">--seed 123456, --seed 42</div>
+                <input type="text" id="seed" placeholder="Use for consistent variations (optional)">
+            </div>
+        </div>
+
+        <h2>🎬 LIVE MIDJOURNEY PROMPT PREVIEW</h2>
+        <div class="instructions">
+            <strong>🚀 Auto-Generated:</strong> Your complete Midjourney prompt builds automatically as you fill in the fields above. Copy the prompt and paste it directly into Midjourney for professional storyboard results!
+        </div>
+        
+        <div class="template-box">
+            <div class="field-label"><strong>Complete Midjourney Prompt:</strong></div>
+            <div id="livePrompt">Your Midjourney storyboard prompt will appear here as you fill in the fields above...</div>
+        </div>
+
+        <div class="button-container">
+            <button onclick="copyPrompt()" class="action-button">📋 Copy Midjourney Prompt</button>
+            <button onclick="downloadDocument()" class="action-button download">📄 Download Storyboard Document</button>
+            <button onclick="copyForLLM()" class="action-button llm">🤖 Copy for ChatGPT Refinement</button>
+        </div>
+
+        <h2>📝 PROJECT NOTES</h2>
+        <div class="template-box">
+            <div class="field-group">
+                <div class="field-label"><strong>Story Context:</strong></div>
+                <textarea id="storyContext" placeholder="Brief story context or scene purpose for reference"></textarea>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Character Notes:</strong></div>
+                <textarea id="characterNotes" placeholder="Character descriptions, age, personality traits relevant to the scene"></textarea>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Sequence Notes:</strong></div>
+                <textarea id="sequenceNotes" placeholder="How this shot fits into the larger sequence or story"></textarea>
+            </div>
+            
+            <div class="field-group">
+                <div class="field-label"><strong>Alternative Versions:</strong></div>
+                <textarea id="alternativeVersions" placeholder="Ideas for alternative angles or variations of this shot"></textarea>
+            </div>
+        </div>
+
+        <div class="pro-tip">
+            <strong>🎬 Pro Storyboarding Tip:</strong> This template follows professional cinematography workflow. Your Midjourney prompt builds automatically with optimal parameter placement. Use consistent seeds across shots for visual continuity in your storyboard sequence!
+        </div>
+    </div>
+
+    <script>
+        // Handle aspect ratio selection
+        document.getElementById('aspectRatio').addEventListener('change', function() {
+            const customInput = document.getElementById('customAspectRatio');
+            if (this.value === 'custom') {
+                customInput.style.display = 'block';
+            } else {
+                customInput.style.display = 'none';
+                customInput.value = '';
+            }
+            updatePrompt();
+        });
+
+        // Auto-update prompt as user types
+        function updatePrompt() {
+            const fields = {
+                projectName: document.getElementById('projectName')?.value || '',
+                sceneType: document.getElementById('sceneType')?.value || '',
+                subject: document.getElementById('subject')?.value || '',
+                action: document.getElementById('action')?.value || '',
+                mood: document.getElementById('mood')?.value || '',
+                shotStyle: document.getElementById('shotStyle')?.value || '',
+                cameraAngle: document.getElementById('cameraAngle')?.value || '',
+                lens: document.getElementById('lens')?.value || '',
+                aspectRatio: document.getElementById('aspectRatio')?.value || '',
+                customAspectRatio: document.getElementById('customAspectRatio')?.value || '',
+                composition: document.getElementById('composition')?.value || '',
+                aperture: document.getElementById('aperture')?.value || '',
+                background: document.getElementById('background')?.value || '',
+                lighting: document.getElementById('lighting')?.value || '',
+                timeWeather: document.getElementById('timeWeather')?.value || '',
+                colorPalette: document.getElementById('colorPalette')?.value || '',
+                materials: document.getElementById('materials')?.value || '',
+                wardrobe: document.getElementById('wardrobe')?.value || '',
+                artistReference: document.getElementById('artistReference')?.value || '',
+                rendering: document.getElementById('rendering')?.value || '',
+                negativePrompts: document.getElementById('negativePrompts')?.value || '',
+                seed: document.getElementById('seed')?.value || ''
+            };
+
+            const finalAspectRatio = fields.aspectRatio === 'custom' ? fields.customAspectRatio : fields.aspectRatio;
+
+            let prompt = "";
+            
+            const promptParts = [];
+            
+            if (fields.subject) promptParts.push(fields.subject);
+            if (fields.action) promptParts.push(fields.action);
+            if (fields.shotStyle) promptParts.push(fields.shotStyle);
+            if (fields.cameraAngle) promptParts.push(fields.cameraAngle);
+            if (fields.lens) promptParts.push(fields.lens);
+            if (fields.composition) promptParts.push(fields.composition);
+            if (fields.aperture) promptParts.push(fields.aperture);
+            if (fields.lighting) promptParts.push(fields.lighting);
+            if (fields.timeWeather) promptParts.push(fields.timeWeather);
+            if (fields.colorPalette) promptParts.push(fields.colorPalette);
+            if (fields.materials) promptParts.push(fields.materials);
+            if (fields.wardrobe) promptParts.push(fields.wardrobe);
+            if (fields.background) promptParts.push(fields.background);
+            if (fields.mood) promptParts.push(fields.mood + " mood");
+            if (fields.artistReference) promptParts.push(fields.artistReference);
+            if (fields.rendering) promptParts.push(fields.rendering);
+
+            prompt = promptParts.join(", ");
+
+            const parameters = [];
+            if (finalAspectRatio && finalAspectRatio.trim()) parameters.push(finalAspectRatio);
+            if (fields.seed && fields.seed.trim()) {
+                const seedValue = fields.seed.replace(/[^\d]/g, '');
+                if (seedValue) parameters.push(`--seed ${seedValue}`);
+            }
+            if (fields.negativePrompts && fields.negativePrompts.trim()) {
+                const negatives = fields.negativePrompts.split(',').map(n => n.trim()).filter(n => n);
+                negatives.forEach(negative => {
+                    if (!negative.startsWith('--no') && !negative.startsWith('no ')) {
+                        parameters.push(`--no ${negative}`);
+                    } else {
+                        parameters.push(negative);
+                    }
+                });
+            }
+
+            if (parameters.length > 0) {
+                prompt += " " + parameters.join(" ");
+            }
+
+            document.getElementById('livePrompt').textContent = prompt || "Your Midjourney storyboard prompt will appear here as you fill in the fields above...";
+        }
+
+        function copyPrompt() {
+            const promptText = document.getElementById('livePrompt').textContent;
+            if (promptText === "Your Midjourney storyboard prompt will appear here as you fill in the fields above...") {
+                alert("Please fill in some fields first to generate your prompt!");
+                return;
+            }
+            navigator.clipboard.writeText(promptText).then(() => {
+                alert("Midjourney prompt copied to clipboard! You can now paste it directly into Midjourney.");
+            }).catch(() => {
+                const textArea = document.createElement('textarea');
+                textArea.value = promptText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert("Midjourney prompt copied to clipboard!");
+            });
+        }
+
+        function copyForLLM() {
+            const promptText = document.getElementById('livePrompt').textContent;
+            if (promptText === "Your Midjourney storyboard prompt will appear here as you fill in the fields above...") {
+                alert("Please fill in some fields first to generate your prompt!");
+                return;
+            }
+            
+            const llmPrompt = `Please refine and optimize this Midjourney storyboard prompt for maximum cinematic effectiveness. Improve the visual language to be more specific and cinematic, ensure proper Midjourney parameter formatting, and enhance the storytelling impact while maintaining the core vision:
+
+${promptText}
+
+Please return an improved version that:
+1. Uses more precise cinematic and visual language
+2. Optimizes parameter placement and formatting for Midjourney
+3. Enhances storytelling and emotional impact
+4. Removes any redundancy while maintaining all key elements
+5. Follows Midjourney best practices for storyboarding
+6. Ensures the prompt will generate professional storyboard-quality images`;
+
+            navigator.clipboard.writeText(llmPrompt).then(() => {
+                alert("ChatGPT refinement prompt copied! Paste this into ChatGPT or Claude to get an optimized Midjourney prompt.");
+            }).catch(() => {
+                const textArea = document.createElement('textarea');
+                textArea.value = llmPrompt;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert("ChatGPT refinement prompt copied!");
+            });
+        }
+
+        function downloadDocument() {
+            const projectName = document.getElementById('projectName').value || "Storyboard_Scene";
+            const promptText = document.getElementById('livePrompt').textContent;
+            
+            let content = `<!DOCTYPE html>
+<html><head><title>${projectName} - Storyboard Prompt</title>
+<style>body{font-family:Arial;margin:40px;line-height:1.6;}h1{color:#6366f1;}h2{color:#1e293b;border-bottom:2px solid #e2e8f0;padding-bottom:5px;}pre{background:#1e293b;color:#e2e8f0;padding:20px;border-radius:10px;white-space:pre-wrap;word-wrap:break-word;}
+.section{margin:20px 0;padding:15px;background:#f8fafc;border-left:4px solid #6366f1;}
+</style>
+</head><body>
+<h1>🎬 ${projectName} - Storyboard Prompt</h1>
+<h2>Complete Midjourney Prompt:</h2>
+<pre>${promptText}</pre>
+<h2>Storyboard Details:</h2>`;
+
+            const fieldMappings = {
+                'projectName': '🎬 Project Name',
+                'sceneType': '📋 Scene Type',
+                'subject': '🎯 Subject/Primary Focus',
+                'action': '🎭 Action/Pose/Expression',
+                'mood': '💭 Mood/Emotion/Tone',
+                'shotStyle': '🎨 Shot Style/Visual Style',
+                'cameraAngle': '📷 Camera Angle/Shot Type',
+                'lens': '🔍 Camera Lens/Focal Length',
+                'aspectRatio': '📐 Aspect Ratio',
+                'customAspectRatio': '📐 Custom Aspect Ratio',
+                'composition': '🖼️ Composition',
+                'aperture': '🌸 Aperture/Depth of Field',
+                'background': '🏙️ Background/Secondary Elements',
+                'lighting': '💡 Lighting',
+                'timeWeather': '🌤️ Time/Weather',
+                'colorPalette': '🎨 Color Palette',
+                'materials': '🧱 Materials/Textures',
+                'wardrobe': '👔 Wardrobe/Props',
+                'artistReference': '🎨 Artist Reference',
+                'rendering': '⚙️ Rendering/Finish',
+                'negativePrompts': '🚫 Negative Prompts',
+                'seed': '🌱 Seed',
+                'storyContext': '📖 Story Context',
+                'characterNotes': '👤 Character Notes',
+                'sequenceNotes': '🎬 Sequence Notes',
+                'alternativeVersions': '🔄 Alternative Versions'
+            };
+
+            Object.keys(fieldMappings).forEach(fieldId => {
+                const element = document.getElementById(fieldId);
+                if (element && element.value) {
+                    content += `<div class="section"><strong>${fieldMappings[fieldId]}:</strong><br>${element.value}</div>`;
+                }
+            });
+
+            content += `<p><em>Generated on ${new Date().toLocaleDateString()} using Midjourney Storyboard Prompt Template</em></p></body></html>`;
+
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${projectName.replace(/\s+/g, '_')}_Storyboard_Prompt.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const allInputs = document.querySelectorAll('input[type="text"], textarea, select');
+            allInputs.forEach(input => {
+                input.addEventListener('input', updatePrompt);
+                input.addEventListener('keyup', updatePrompt);
+                input.addEventListener('change', updatePrompt);
+            });
+        });
+    </script>
+</body>
+</html>
