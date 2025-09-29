@@ -1,0 +1,18 @@
+name: Deploy to HuggingFace
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Push to HuggingFace
+        run: |
+          git remote add hf https://huggingface.co/spaces/24Zyad/Image_Gen_Prompt_Engine
+          git push hf main
+        env:
+          HF_TOKEN: HF_TOKEN
