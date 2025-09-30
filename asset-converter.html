@@ -110,6 +110,20 @@
                             <div class="ratio-size">1200×628</div>
                         </div>
                     </label>
+
+                    <label class="ratio-card custom-dimensions-card">
+                        <input type="checkbox" value="custom" id="customDimensionsCheckbox">
+                        <div class="ratio-content">
+                            <div class="ratio-visual" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">✨</div>
+                            <div class="ratio-label">Custom Size</div>
+                            <div class="ratio-platform">Your dimensions</div>
+                            <div class="custom-inputs" style="padding: 10px 0;">
+                                <input type="number" id="customWidth" placeholder="Width" min="1" max="10000" style="width: 70px; padding: 5px; margin: 2px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                                <span style="margin: 0 5px;">×</span>
+                                <input type="number" id="customHeight" placeholder="Height" min="1" max="10000" style="width: 70px; padding: 5px; margin: 2px; border: 1px solid #cbd5e1; border-radius: 4px;">
+                            </div>
+                        </div>
+                    </label>
                 </div>
 
                 <div class="crop-style-section">
@@ -220,6 +234,21 @@
             });
         });
 
+        // Custom dimensions input handlers
+        document.getElementById('customWidth').addEventListener('input', function() {
+            if (document.getElementById('customDimensionsCheckbox').checked &&
+                document.querySelector('input[name="cropStyle"][value="custom"]:checked')) {
+                updateCropPreview();
+            }
+        });
+
+        document.getElementById('customHeight').addEventListener('input', function() {
+            if (document.getElementById('customDimensionsCheckbox').checked &&
+                document.querySelector('input[name="cropStyle"][value="custom"]:checked')) {
+                updateCropPreview();
+            }
+        });
+
         // Drag and drop handlers
         const uploadBox = document.getElementById('uploadBox');
         uploadBox.addEventListener('click', () => document.getElementById('fileInput').click());
@@ -303,8 +332,22 @@
 
             // Use first checked ratio for preview
             const firstRatio = checkedBoxes[0];
-            const targetWidth = parseInt(firstRatio.dataset.width);
-            const targetHeight = parseInt(firstRatio.dataset.height);
+            let targetWidth, targetHeight;
+
+            // Handle custom dimensions
+            if (firstRatio.value === 'custom') {
+                targetWidth = parseInt(document.getElementById('customWidth').value);
+                targetHeight = parseInt(document.getElementById('customHeight').value);
+
+                if (!targetWidth || !targetHeight || targetWidth <= 0 || targetHeight <= 0) {
+                    document.getElementById('cropPreviewContainer').innerHTML = '<p style="text-align:center; padding: 40px; color: #94a3b8;">Please enter valid custom dimensions</p>';
+                    return;
+                }
+            } else {
+                targetWidth = parseInt(firstRatio.dataset.width);
+                targetHeight = parseInt(firstRatio.dataset.height);
+            }
+
             currentCropRatio = targetWidth / targetHeight;
 
             const canvas = document.getElementById('cropCanvas');
@@ -437,6 +480,27 @@
                 return;
             }
 
+            // Validate custom dimensions if selected
+            const customCheckbox = document.getElementById('customDimensionsCheckbox');
+            if (customCheckbox.checked) {
+                const customWidth = parseInt(document.getElementById('customWidth').value);
+                const customHeight = parseInt(document.getElementById('customHeight').value);
+
+                if (!customWidth || !customHeight || customWidth <= 0 || customHeight <= 0) {
+                    alert('Please enter valid custom dimensions (width and height must be greater than 0)');
+                    return;
+                }
+
+                if (customWidth > 10000 || customHeight > 10000) {
+                    alert('Custom dimensions cannot exceed 10000 pixels');
+                    return;
+                }
+
+                // Set custom dimensions as data attributes
+                customCheckbox.dataset.width = customWidth;
+                customCheckbox.dataset.height = customHeight;
+            }
+
             const cropStyle = document.querySelector('input[name="cropStyle"]:checked').value;
             const previewGrid = document.getElementById('previewGrid');
             previewGrid.innerHTML = '';
@@ -445,9 +509,18 @@
             checkWarningForCropping(checkboxes);
 
             checkboxes.forEach(checkbox => {
-                const width = parseInt(checkbox.dataset.width);
-                const height = parseInt(checkbox.dataset.height);
-                const ratio = checkbox.value;
+                let width, height, ratio;
+
+                // Handle custom dimensions
+                if (checkbox.value === 'custom') {
+                    width = parseInt(document.getElementById('customWidth').value);
+                    height = parseInt(document.getElementById('customHeight').value);
+                    ratio = `${width}×${height}`;
+                } else {
+                    width = parseInt(checkbox.dataset.width);
+                    height = parseInt(checkbox.dataset.height);
+                    ratio = checkbox.value;
+                }
 
                 const canvas = document.createElement('canvas');
                 canvas.width = width;
@@ -522,8 +595,17 @@
             let showWarning = false;
 
             checkboxes.forEach(checkbox => {
-                const width = parseInt(checkbox.dataset.width);
-                const height = parseInt(checkbox.dataset.height);
+                let width, height;
+
+                // Handle custom dimensions
+                if (checkbox.value === 'custom') {
+                    width = parseInt(document.getElementById('customWidth').value);
+                    height = parseInt(document.getElementById('customHeight').value);
+                } else {
+                    width = parseInt(checkbox.dataset.width);
+                    height = parseInt(checkbox.dataset.height);
+                }
+
                 const targetRatio = width / height;
 
                 // Calculate how much will be cropped
@@ -587,6 +669,10 @@
 
             // Uncheck all ratios
             document.querySelectorAll('.ratio-card input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+            // Reset custom dimensions
+            document.getElementById('customWidth').value = '';
+            document.getElementById('customHeight').value = '';
         }
     </script>
 </body>
