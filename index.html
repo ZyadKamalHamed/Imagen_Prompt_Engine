@@ -64,7 +64,7 @@
 
         .templates-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
             gap: 40px;
             margin-top: 40px;
         }
@@ -97,6 +97,11 @@
 
         .nano-banana-header {
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+        }
+
+        .asset-converter-header {
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
         }
 
@@ -173,6 +178,17 @@
         .nano-banana-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 35px rgba(251, 191, 36, 0.6);
+        }
+
+        .asset-converter-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .asset-converter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6);
         }
 
         .footer {
@@ -253,6 +269,26 @@
                     <button class="launch-btn nano-banana-btn">Launch Nano Banana Template</button>
                 </div>
             </div>
+
+            <!-- Asset Converter -->
+            <div class="template-card" onclick="openAssetConverter()">
+                <div class="template-header asset-converter-header">
+                    <span class="template-icon">🎨</span>
+                    <h2 class="template-title">ASSET CONVERTER</h2>
+                    <p class="template-subtitle">Multi-Platform Image Resizer</p>
+                </div>
+                <div class="template-body">
+                    <ul class="feature-list">
+                        <li>Convert to multiple aspect ratios</li>
+                        <li>Optimized for social media</li>
+                        <li>Instagram, YouTube, Pinterest</li>
+                        <li>Batch download all formats</li>
+                        <li>Smart cropping options</li>
+                        <li>Client-side processing</li>
+                    </ul>
+                    <button class="launch-btn asset-converter-btn">Launch Asset Converter</button>
+                </div>
+            </div>
         </div>
 
         <div class="footer">
@@ -263,11 +299,15 @@
 
     <script>
         function openMidjourney() {
-            window.location.href = 'midjourney_V2.html'; // 
+            window.location.href = 'midjourney_V2.html';
         }
 
         function openNanoBanana() {
-            window.location.href = 'nano-banana_V2.html'; // 
+            window.location.href = 'nano-banana_V2.html';
+        }
+
+        function openAssetConverter() {
+            window.location.href = 'asset-converter.html';
         }
     </script>
 </body>

@@ -1,15 +1,33 @@
 body {
     font-family: 'Calibri', Arial, sans-serif;
-    max-width: 8.5in;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 1in;
+    padding: 40px 60px;
+}
+
+@media (min-width: 1600px) {
+    body {
+        max-width: 1600px;
+    }
+}
+
+@media (max-width: 1024px) {
+    body {
+        padding: 30px 40px;
+    }
 }
 
 .container {
     background: white;
-    padding: 40px;
+    padding: 40px 50px;
     border-radius: 15px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+@media (min-width: 1200px) {
+    .container {
+        padding: 50px 70px;
+    }
 }
 
 /* === HEADER === */
@@ -153,25 +171,36 @@ h2 {
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
     body {
-        padding: 20px;
+        padding: 15px;
     }
-    
+
     .container {
-        padding: 20px;
+        padding: 25px 20px;
     }
-    
+
     .action-button {
         display: block;
         margin: 10px 0;
         width: 100%;
     }
-    
+
     h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
-    
+
     .section-header {
         font-size: 1rem;
         padding: 12px 15px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    body {
+        max-width: 95%;
+        padding: 30px;
+    }
+
+    .container {
+        padding: 35px;
     }
 }

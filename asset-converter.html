@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert your images to multiple aspect ratios for different social media platforms">
+    <meta name="keywords" content="image converter, aspect ratio, social media, resize, crop">
+    <title>Image Asset Converter - Multi-Platform Resizer</title>
+
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/asset-converter.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 IMAGE ASSET CONVERTER</h1>
+            <p class="subtitle"><strong>Transform Your Images for Every Platform</strong></p>
+        </div>
+
+        <div class="instructions">
+            <strong>🚀 How It Works:</strong> Upload your image, select the aspect ratios you need, and download all versions instantly. Perfect for creating social media content across multiple platforms!
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-section" id="uploadSection">
+            <div class="upload-box" id="uploadBox">
+                <div class="upload-icon">📤</div>
+                <h2>Drop your image here</h2>
+                <p>or click to browse</p>
+                <input type="file" id="fileInput" accept="image/*" hidden>
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    Choose Image
+                </button>
+                <p class="upload-hint">Supports JPG, PNG, WEBP up to 20MB</p>
+            </div>
+        </div>
+
+        <!-- Processing Section -->
+        <div class="processing-section" id="processingSection" style="display:none;">
+            <div class="original-image-container">
+                <h2>📸 Original Image</h2>
+                <div class="original-preview">
+                    <img id="originalImage" alt="Original">
+                    <div class="image-info" id="imageInfo"></div>
+                </div>
+                <button class="btn btn-secondary" onclick="resetConverter()">🔄 Upload Different Image</button>
+            </div>
+
+            <!-- Aspect Ratio Selection -->
+            <div class="ratio-selection-section">
+                <h2>📐 Select Target Aspect Ratios</h2>
+                <div class="ratio-grid">
+                    <label class="ratio-card">
+                        <input type="checkbox" value="1:1" data-width="1080" data-height="1080">
+                        <div class="ratio-content">
+                            <div class="ratio-visual ratio-1-1"></div>
+                            <div class="ratio-label">1:1 Square</div>
+                            <div class="ratio-platform">Instagram, Facebook</div>
+                            <div class="ratio-size">1080×1080</div>
+                        </div>
+                    </label>
+
+                    <label class="ratio-card">
+                        <input type="checkbox" value="4:5" data-width="1080" data-height="1350">
+                        <div class="ratio-content">
+                            <div class="ratio-visual ratio-4-5"></div>
+                            <div class="ratio-label">4:5 Portrait</div>
+                            <div class="ratio-platform">Instagram Feed</div>
+                            <div class="ratio-size">1080×1350</div>
+                        </div>
+                    </label>
+
+                    <label class="ratio-card">
+                        <input type="checkbox" value="9:16" data-width="1080" data-height="1920">
+                        <div class="ratio-content">
+                            <div class="ratio-visual ratio-9-16"></div>
+                            <div class="ratio-label">9:16 Vertical</div>
+                            <div class="ratio-platform">Stories, Reels, TikTok</div>
+                            <div class="ratio-size">1080×1920</div>
+                        </div>
+                    </label>
+
+                    <label class="ratio-card">
+                        <input type="checkbox" value="16:9" data-width="1920" data-height="1080">
+                        <div class="ratio-content">
+                            <div class="ratio-visual ratio-16-9"></div>
+                            <div class="ratio-label">16:9 Landscape</div>
+                            <div class="ratio-platform">YouTube, Twitter</div>
+                            <div class="ratio-size">1920×1080</div>
+                        </div>
+                    </label>
+
+                    <label class="ratio-card">
+                        <input type="checkbox" value="2:3" data-width="1000" data-height="1500">
+                        <div class="ratio-content">
+                            <div class="ratio-visual ratio-2-3"></div>
+                            <div class="ratio-label">2:3 Portrait</div>
+                            <div class="ratio-platform">Pinterest</div>
+                            <div class="ratio-size">1000×1500</div>
+                        </div>
+                    </label>
+
+                    <label class="ratio-card">
+                        <input type="checkbox" value="1.91:1" data-width="1200" data-height="628">
+                        <div class="ratio-content">
+                            <div class="ratio-visual ratio-1-91-1"></div>
+                            <div class="ratio-label">1.91:1 Wide</div>
+                            <div class="ratio-platform">LinkedIn, Facebook</div>
+                            <div class="ratio-size">1200×628</div>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="crop-style-section">
+                    <h3>✂️ Crop Position</h3>
+                    <div class="crop-options">
+                        <label class="crop-option">
+                            <input type="radio" name="cropStyle" value="center" checked>
+                            <span>Center (Auto)</span>
+                        </label>
+                        <label class="crop-option">
+                            <input type="radio" name="cropStyle" value="top">
+                            <span>Top</span>
+                        </label>
+                        <label class="crop-option">
+                            <input type="radio" name="cropStyle" value="bottom">
+                            <span>Bottom</span>
+                        </label>
+                        <label class="crop-option">
+                            <input type="radio" name="cropStyle" value="custom">
+                            <span>🎯 Custom Position</span>
+                        </label>
+                    </div>
+
+                    <div id="customCropSection" style="display:none; margin-top: 20px;">
+                        <p style="text-align: center; color: #64748b; margin-bottom: 15px;">
+                            <strong>Interactive Crop Preview</strong><br>
+                            <small>Select an aspect ratio above, then drag the crop area to position it</small>
+                        </p>
+                        <div id="cropPreviewContainer" class="crop-preview-container">
+                            <canvas id="cropCanvas"></canvas>
+                            <div id="cropOverlay" class="crop-overlay"></div>
+                        </div>
+                        <div style="text-align: center; margin-top: 10px;">
+                            <button class="btn btn-secondary btn-small" onclick="resetCropPosition()">Reset Position</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Extension Info Box -->
+                <div class="ai-extension-info">
+                    <div class="info-icon">🤖</div>
+                    <div class="info-content">
+                        <h3>Need More Image Instead of Cropping?</h3>
+                        <p>If cropping removes too much important content, you can use AI tools to <strong>extend/generate</strong> more of your image instead:</p>
+                        <div class="ai-tools-grid">
+                            <a href="https://clipdrop.co/uncrop" target="_blank" class="ai-tool-card">
+                                <strong>🎨 Clipdrop Uncrop</strong>
+                                <span>Free AI image extension</span>
+                            </a>
+                            <a href="https://www.photopea.com/" target="_blank" class="ai-tool-card">
+                                <strong>🖼️ Photopea</strong>
+                                <span>Free online editor with content-aware fill</span>
+                            </a>
+                            <a href="https://www.adobe.com/products/firefly.html" target="_blank" class="ai-tool-card">
+                                <strong>✨ Adobe Firefly</strong>
+                                <span>Generative fill (paid)</span>
+                            </a>
+                        </div>
+                        <p class="info-note">💡 <strong>Tip:</strong> Use these tools first to extend your image, then come back here to resize for all platforms!</p>
+                    </div>
+                </div>
+
+                <div class="action-section">
+                    <button class="btn btn-primary" onclick="generatePreviews()" id="generateBtn">
+                        🎯 Generate Previews
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="preview-section" id="previewSection" style="display:none;">
+                <h2>👀 Preview & Download</h2>
+                <div class="preview-grid" id="previewGrid"></div>
+
+                <div class="button-container">
+                    <button class="btn btn-primary" onclick="downloadAll()">
+                        💾 Download All Images
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetPreviews()">
+                        ← Back to Selection
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let originalImageData = null;
+        let originalCanvas = null;
+        let customCropPosition = { x: 0, y: 0 };
+        let isDragging = false;
+        let dragStart = { x: 0, y: 0 };
+        let currentCropRatio = null;
+
+        // File input handler
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+
+        // Crop style change handler
+        document.querySelectorAll('input[name="cropStyle"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const customSection = document.getElementById('customCropSection');
+                if (this.value === 'custom') {
+                    customSection.style.display = 'block';
+                    updateCropPreview();
+                } else {
+                    customSection.style.display = 'none';
+                }
+            });
+        });
+
+        // Drag and drop handlers
+        const uploadBox = document.getElementById('uploadBox');
+        uploadBox.addEventListener('click', () => document.getElementById('fileInput').click());
+        uploadBox.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBox.classList.add('drag-over');
+        });
+        uploadBox.addEventListener('dragleave', () => {
+            uploadBox.classList.remove('drag-over');
+        });
+        uploadBox.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBox.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+
+        function handleFile(file) {
+            if (!file.type.match('image.*')) {
+                alert('Please select an image file');
+                return;
+            }
+
+            if (file.size > 20 * 1024 * 1024) {
+                alert('File size must be less than 20MB');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    originalImageData = img;
+                    displayOriginalImage(img);
+                    document.getElementById('uploadSection').style.display = 'none';
+                    document.getElementById('processingSection').style.display = 'block';
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function displayOriginalImage(img) {
+            const originalImg = document.getElementById('originalImage');
+            originalImg.src = img.src;
+
+            const info = document.getElementById('imageInfo');
+            const aspectRatio = (img.width / img.height).toFixed(2);
+            info.innerHTML = `
+                <strong>Dimensions:</strong> ${img.width} × ${img.height}px<br>
+                <strong>Aspect Ratio:</strong> ${aspectRatio}:1
+            `;
+
+            // Add listeners to ratio checkboxes to update crop preview
+            document.querySelectorAll('.ratio-card input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (document.querySelector('input[name="cropStyle"][value="custom"]:checked')) {
+                        updateCropPreview();
+                    }
+                });
+            });
+        }
+
+        function updateCropPreview() {
+            if (!originalImageData) return;
+
+            const checkedBoxes = document.querySelectorAll('.ratio-card input[type="checkbox"]:checked');
+            if (checkedBoxes.length === 0) {
+                document.getElementById('cropPreviewContainer').innerHTML = '<p style="text-align:center; padding: 40px; color: #94a3b8;">Select an aspect ratio above to see crop preview</p>';
+                return;
+            }
+
+            // Use first checked ratio for preview
+            const firstRatio = checkedBoxes[0];
+            const targetWidth = parseInt(firstRatio.dataset.width);
+            const targetHeight = parseInt(firstRatio.dataset.height);
+            currentCropRatio = targetWidth / targetHeight;
+
+            const canvas = document.getElementById('cropCanvas');
+            const container = document.getElementById('cropPreviewContainer');
+
+            // Set canvas size to fit container
+            const maxWidth = Math.min(600, container.offsetWidth - 40);
+            const scale = maxWidth / originalImageData.width;
+            canvas.width = originalImageData.width * scale;
+            canvas.height = originalImageData.height * scale;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(originalImageData, 0, 0, canvas.width, canvas.height);
+
+            // Draw crop overlay
+            drawCropOverlay(canvas, currentCropRatio);
+        }
+
+        function drawCropOverlay(canvas, ratio) {
+            const sourceRatio = originalImageData.width / originalImageData.height;
+            const scale = canvas.width / originalImageData.width;
+
+            let cropWidth, cropHeight, cropX, cropY;
+
+            if (sourceRatio > ratio) {
+                // Image is wider - crop width
+                cropHeight = canvas.height;
+                cropWidth = cropHeight * ratio;
+                cropX = customCropPosition.x * scale;
+                cropY = 0;
+            } else {
+                // Image is taller - crop height
+                cropWidth = canvas.width;
+                cropHeight = cropWidth / ratio;
+                cropX = 0;
+                cropY = customCropPosition.y * scale;
+            }
+
+            // Constrain crop position
+            const maxX = Math.max(0, canvas.width - cropWidth);
+            const maxY = Math.max(0, canvas.height - cropHeight);
+            cropX = Math.max(0, Math.min(cropX, maxX));
+            cropY = Math.max(0, Math.min(cropY, maxY));
+
+            // Draw darkened overlay
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Clear crop area
+            ctx.clearRect(cropX, cropY, cropWidth, cropHeight);
+            ctx.drawImage(originalImageData, 0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw crop rectangle
+            ctx.clearRect(cropX, cropY, cropWidth, cropHeight);
+            ctx.drawImage(originalImageData,
+                (cropX / scale), (cropY / scale),
+                (cropWidth / scale), (cropHeight / scale),
+                cropX, cropY, cropWidth, cropHeight);
+
+            ctx.strokeStyle = '#4f46e5';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(cropX, cropY, cropWidth, cropHeight);
+
+            // Store actual crop position
+            customCropPosition.x = cropX / scale;
+            customCropPosition.y = cropY / scale;
+
+            // Add drag functionality
+            setupCropDrag(canvas, cropX, cropY, cropWidth, cropHeight, scale);
+        }
+
+        function setupCropDrag(canvas, cropX, cropY, cropWidth, cropHeight, scale) {
+            const sourceRatio = originalImageData.width / originalImageData.height;
+
+            canvas.onmousedown = function(e) {
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Check if click is inside crop area
+                if (x >= cropX && x <= cropX + cropWidth && y >= cropY && y <= cropY + cropHeight) {
+                    isDragging = true;
+                    dragStart = { x: e.clientX, y: e.clientY };
+                    canvas.style.cursor = 'move';
+                }
+            };
+
+            canvas.onmousemove = function(e) {
+                if (!isDragging) return;
+
+                const dx = e.clientX - dragStart.x;
+                const dy = e.clientY - dragStart.y;
+
+                if (sourceRatio > currentCropRatio) {
+                    customCropPosition.x += dx / scale;
+                } else {
+                    customCropPosition.y += dy / scale;
+                }
+
+                dragStart = { x: e.clientX, y: e.clientY };
+                updateCropPreview();
+            };
+
+            canvas.onmouseup = function() {
+                isDragging = false;
+                canvas.style.cursor = 'grab';
+            };
+
+            canvas.onmouseleave = function() {
+                isDragging = false;
+                canvas.style.cursor = 'grab';
+            };
+
+            canvas.style.cursor = 'grab';
+        }
+
+        function resetCropPosition() {
+            customCropPosition = { x: 0, y: 0 };
+            updateCropPreview();
+        }
+
+        function generatePreviews() {
+            const checkboxes = document.querySelectorAll('.ratio-card input[type="checkbox"]:checked');
+
+            if (checkboxes.length === 0) {
+                alert('Please select at least one aspect ratio');
+                return;
+            }
+
+            const cropStyle = document.querySelector('input[name="cropStyle"]:checked').value;
+            const previewGrid = document.getElementById('previewGrid');
+            previewGrid.innerHTML = '';
+
+            // Check if too much will be cropped
+            checkWarningForCropping(checkboxes);
+
+            checkboxes.forEach(checkbox => {
+                const width = parseInt(checkbox.dataset.width);
+                const height = parseInt(checkbox.dataset.height);
+                const ratio = checkbox.value;
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+
+                // Calculate crop dimensions
+                const targetRatio = width / height;
+                const sourceRatio = originalImageData.width / originalImageData.height;
+
+                let sx, sy, sWidth, sHeight;
+
+                if (sourceRatio > targetRatio) {
+                    // Source is wider, crop width
+                    sHeight = originalImageData.height;
+                    sWidth = sHeight * targetRatio;
+
+                    if (cropStyle === 'custom') {
+                        sx = customCropPosition.x;
+                    } else {
+                        sx = (originalImageData.width - sWidth) / 2;
+                    }
+                    sy = 0;
+                } else {
+                    // Source is taller, crop height
+                    sWidth = originalImageData.width;
+                    sHeight = sWidth / targetRatio;
+                    sx = 0;
+
+                    // Apply crop style
+                    if (cropStyle === 'custom') {
+                        sy = customCropPosition.y;
+                    } else if (cropStyle === 'top') {
+                        sy = 0;
+                    } else if (cropStyle === 'bottom') {
+                        sy = originalImageData.height - sHeight;
+                    } else {
+                        sy = (originalImageData.height - sHeight) / 2;
+                    }
+                }
+
+                // Constrain to image bounds
+                sx = Math.max(0, Math.min(sx, originalImageData.width - sWidth));
+                sy = Math.max(0, Math.min(sy, originalImageData.height - sHeight));
+
+                ctx.drawImage(originalImageData, sx, sy, sWidth, sHeight, 0, 0, width, height);
+
+                // Create preview card
+                const previewCard = document.createElement('div');
+                previewCard.className = 'preview-card';
+                previewCard.innerHTML = `
+                    <div class="preview-image-container">
+                        <img src="${canvas.toDataURL('image/jpeg', 0.95)}" alt="${ratio}">
+                    </div>
+                    <div class="preview-info">
+                        <strong>${ratio}</strong>
+                        <span>${width}×${height}px</span>
+                    </div>
+                    <button class="btn btn-primary btn-small" onclick="downloadSingle(this, '${ratio}', ${width}, ${height})">
+                        ⬇️ Download
+                    </button>
+                `;
+                previewGrid.appendChild(previewCard);
+            });
+
+            document.getElementById('previewSection').style.display = 'block';
+            document.getElementById('previewSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function checkWarningForCropping(checkboxes) {
+            const sourceRatio = originalImageData.width / originalImageData.height;
+            let showWarning = false;
+
+            checkboxes.forEach(checkbox => {
+                const width = parseInt(checkbox.dataset.width);
+                const height = parseInt(checkbox.dataset.height);
+                const targetRatio = width / height;
+
+                // Calculate how much will be cropped
+                let cropPercentage;
+                if (sourceRatio > targetRatio) {
+                    const usableWidth = originalImageData.height * targetRatio;
+                    cropPercentage = ((originalImageData.width - usableWidth) / originalImageData.width) * 100;
+                } else {
+                    const usableHeight = originalImageData.width / targetRatio;
+                    cropPercentage = ((originalImageData.height - usableHeight) / originalImageData.height) * 100;
+                }
+
+                if (cropPercentage > 30) {
+                    showWarning = true;
+                }
+            });
+
+            // Show/highlight AI extension section if too much cropping
+            const aiSection = document.querySelector('.ai-extension-info');
+            if (showWarning) {
+                aiSection.classList.add('warning-active');
+                aiSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                aiSection.classList.remove('warning-active');
+            }
+        }
+
+        function downloadSingle(button, ratio, width, height) {
+            const img = button.parentElement.querySelector('img');
+            const link = document.createElement('a');
+            link.download = `image-${ratio.replace(/:/g, '-')}-${width}x${height}.jpg`;
+            link.href = img.src;
+            link.click();
+        }
+
+        function downloadAll() {
+            const images = document.querySelectorAll('.preview-card img');
+            images.forEach((img, index) => {
+                setTimeout(() => {
+                    const link = document.createElement('a');
+                    const ratio = img.alt;
+                    const infoText = img.parentElement.nextElementSibling.querySelector('span').textContent;
+                    link.download = `image-${ratio.replace(/:/g, '-')}-${infoText.replace('×', 'x').replace('px', '')}.jpg`;
+                    link.href = img.src;
+                    link.click();
+                }, index * 200);
+            });
+        }
+
+        function resetPreviews() {
+            document.getElementById('previewSection').style.display = 'none';
+            document.querySelector('.ratio-selection-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetConverter() {
+            document.getElementById('uploadSection').style.display = 'block';
+            document.getElementById('processingSection').style.display = 'none';
+            document.getElementById('previewSection').style.display = 'none';
+            document.getElementById('fileInput').value = '';
+            originalImageData = null;
+
+            // Uncheck all ratios
+            document.querySelectorAll('.ratio-card input[type="checkbox"]').forEach(cb => cb.checked = false);
+        }
+    </script>
+</body>
+</html>

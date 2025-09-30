@@ -14,9 +14,27 @@ body {
 
 /* === UTILITY CLASSES === */
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 40px 60px;
+}
+
+@media (min-width: 1600px) {
+    .container {
+        max-width: 1600px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        padding: 50px 70px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .container {
+        padding: 30px 40px;
+    }
 }
 
 /* === BUTTONS === */
@@ -225,18 +243,25 @@ textarea {
 /* === RESPONSIVE DESIGN === */
 @media (max-width: 768px) {
     .container {
-        padding: 15px;
+        padding: 25px 20px;
     }
-    
+
     .button-container {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .btn,
     .action-button {
         width: 100%;
         justify-content: center;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        max-width: 95%;
+        padding: 35px;
     }
 }
 
